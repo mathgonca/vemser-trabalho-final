@@ -18,7 +18,6 @@ public class Cinema {
         this.cidade = cidade;
     }
 
-
     public String getNome() {
         return nome;
     }
