@@ -1,4 +1,4 @@
-package com.br.app.filme.enums;
+package com.br.app.entidades.enums;
 
 public enum Idioma {
 

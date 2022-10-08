@@ -1,13 +1,11 @@
-package com.br.app.filme;
+package com.br.app.entidades;
 
-import com.br.app.filme.enums.Idioma;
-import com.br.app.ingresso.Ingresso;
+import com.br.app.entidades.enums.Idioma;
 
 import java.util.ArrayList;
 
 public class Filme {
 
-    private int id;
     private String nome;
     private Idioma idioma;
 
@@ -18,20 +16,11 @@ public class Filme {
     public Filme() {
     }
 
-    public Filme(int id, String nome, Idioma idioma, int classificacaoEtaria, int duracao) {
-        this.id = id;
+    public Filme(String nome, Idioma idioma, int classificacaoEtaria, int duracao) {
         this.nome = nome;
         this.idioma = idioma;
         this.classificacaoEtaria = classificacaoEtaria;
         this.duracao = duracao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -69,8 +58,7 @@ public class Filme {
     @Override
     public String toString() {
         return "Filme{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+                "nome='" + nome + '\'' +
                 ", idioma=" + idioma +
                 ", classificacaoEtaria=" + classificacaoEtaria +
                 ", duracao=" + duracao +

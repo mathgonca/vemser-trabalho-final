@@ -1,37 +1,27 @@
-package com.br.app.cliente;
-
-import com.br.app.ingresso.Ingresso;
+package com.br.app.entidades;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente {
 
-    private int id;
     private String primeiroNome;
     private String ultimoNome;
     private String cpf;
     private int idade;
     private String email;
-    private ArrayList<Ingresso> ingressos;
+    private List<Ingresso> ingressos = new ArrayList<>();
 
     public Cliente() {
     }
 
-    public Cliente(int id, String primeiroNome, String ultimoNome, String cpf, int idade, String email) {
-        this.id = id;
+    public Cliente(String primeiroNome, String ultimoNome, String cpf, int idade, String email) {
         this.primeiroNome = primeiroNome;
         this.ultimoNome = ultimoNome;
         this.cpf = cpf;
         this.idade = idade;
         this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.ingressos = new ArrayList<>();
     }
 
     public String getPrimeiroNome() {
@@ -74,19 +64,18 @@ public class Cliente {
         this.email = email;
     }
 
-    public ArrayList<Ingresso> getIngressos() {
+    public List<Ingresso> getIngressos() {
         return ingressos;
     }
 
-    public void setIngressos(ArrayList<Ingresso> ingressos) {
+    public void setIngressos(List<Ingresso> ingressos) {
         this.ingressos = ingressos;
     }
 
     @Override
     public String toString() {
         return "Cliente{" +
-                "id=" + id +
-                ", primeiroNome='" + primeiroNome + '\'' +
+                "primeiroNome='" + primeiroNome + '\'' +
                 ", ultimoNome='" + ultimoNome + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", idade=" + idade +
