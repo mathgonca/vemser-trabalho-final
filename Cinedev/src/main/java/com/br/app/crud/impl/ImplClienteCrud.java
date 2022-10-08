@@ -20,8 +20,7 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
                 .findFirst();
 
         if (clienteRetorno.isEmpty()) {
-            valores.add(cliente);
-            return true;
+            return valores.add(cliente);
         } else {
             return false;
         }
@@ -29,10 +28,7 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
 
     @Override
     public boolean adicionarIngresso(Cliente cliente, Ingresso ingresso) {
-
-        if(ingresso.getDisponibilidade() == Disponibilidade.INDISPONIVEL) {
-            return false;
-        } else {
+        if(ingresso.getDisponibilidade() == Disponibilidade.DISPONIVEL) {
             ingresso.setDisponibilidade(Disponibilidade.INDISPONIVEL);
 
             List<Ingresso> ingressoList = cliente.getIngressos();
@@ -41,6 +37,13 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
             cliente.setIngressos(ingressoList);
 
             return true;
+        } else {
+            return false;
         }
+    }
+
+    @Override
+    public List<Ingresso> listaIngressosComprados(Cliente cliente) {
+        return cliente.getIngressos();
     }
 }
