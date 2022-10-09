@@ -13,14 +13,17 @@ public class Filme {
     private int duracao;
     private ArrayList<Ingresso> ingressos;
 
-    public Filme() {
+    public Filme(String s, String dublado, String s1, String s2) {
     }
 
-    public Filme(String nome, Idioma idioma, int classificacaoEtaria, int duracao) {
+    public Filme(String nome, Idioma idioma, int classificacaoIndicativa, int duracao) {
         this.nome = nome;
         this.idioma = idioma;
-        this.classificacaoEtaria = classificacaoEtaria;
+        this.classificacaoEtaria = classificacaoIndicativa;
         this.duracao = duracao;
+    }
+
+    public static void nome() {
     }
 
     public String getNome() {
@@ -29,6 +32,14 @@ public class Filme {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
     }
 
     public Idioma getIdioma() {
@@ -57,11 +68,11 @@ public class Filme {
 
     @Override
     public String toString() {
-        return "Filme{" +
-                "nome='" + nome + '\'' +
-                ", idioma=" + idioma +
-                ", classificacaoEtaria=" + classificacaoEtaria +
-                ", duracao=" + duracao +
+        return "Filme {" +
+                "nome: '" + nome + '\'' +
+                ", idioma: " + idioma +
+                ", classificacaoIndicativa: " + classificacaoEtaria +
+                ", duracao: " + duracao +
                 '}';
     }
 }

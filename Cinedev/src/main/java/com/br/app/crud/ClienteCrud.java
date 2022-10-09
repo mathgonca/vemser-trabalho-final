@@ -6,4 +6,6 @@ import com.br.app.entidades.Ingresso;
 public interface ClienteCrud {
 
     public boolean adicionarIngresso(Cliente cliente, Ingresso ingresso);
+
 }
+
