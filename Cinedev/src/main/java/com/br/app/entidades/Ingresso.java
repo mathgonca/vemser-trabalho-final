@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class Ingresso {
 
     private int cadeira;
+    private double preco;
     private LocalDateTime dataHora;
     private Disponibilidade disponibilidade;
     private Filme filme;
@@ -53,11 +54,21 @@ public class Ingresso {
         this.filme = filme;
     }
 
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
     @Override
     public String toString() {
         return "Ingresso{" +
                 "cadeira=" + cadeira +
+                ", preco=" + preco +
                 ", dataHora=" + dataHora +
+                ", disponibilidade=" + disponibilidade +
                 ", filme=" + filme +
                 '}';
     }
