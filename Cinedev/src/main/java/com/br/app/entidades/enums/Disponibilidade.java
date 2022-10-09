@@ -3,9 +3,13 @@ package com.br.app.entidades.enums;
 public enum Disponibilidade {
     DISPONIVEL(true), INDISPONIVEL(false);
 
-    private final boolean descricao;
+    private final boolean disponibilidade;
 
     Disponibilidade(boolean descricao) {
-        this.descricao = descricao;
+        this.disponibilidade = descricao;
+    }
+
+    public boolean isDisponibilidade() {
+        return disponibilidade;
     }
 }

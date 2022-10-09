@@ -11,7 +11,6 @@ public class Filme {
 
     private int classificacaoEtaria;
     private int duracao;
-    private ArrayList<Ingresso> ingressos;
 
     public Filme(String s, String dublado, String s1, String s2) {
     }
@@ -56,14 +55,6 @@ public class Filme {
 
     public void setClassificacaoEtaria(int classificacaoEtaria) {
         this.classificacaoEtaria = classificacaoEtaria;
-    }
-
-    public ArrayList<Ingresso> getIngressos() {
-        return ingressos;
-    }
-
-    public void setIngressos(ArrayList<Ingresso> ingressos) {
-        this.ingressos = ingressos;
     }
 
     @Override
