@@ -28,7 +28,9 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
 
     @Override
     public boolean adicionarIngresso(Cliente cliente, Ingresso ingresso) {
-        if(ingresso.getDisponibilidade() == Disponibilidade.DISPONIVEL) {
+        boolean isDisponivel = ingresso.getDisponibilidade().isDisponibilidade();
+
+        if(isDisponivel) {
             ingresso.setDisponibilidade(Disponibilidade.INDISPONIVEL);
 
             List<Ingresso> ingressoList = cliente.getIngressos();
