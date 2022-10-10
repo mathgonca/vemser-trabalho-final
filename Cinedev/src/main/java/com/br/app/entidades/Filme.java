@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 public class Filme {
 
+    private int id;
     private String nome;
     private Idioma idioma;
 
     private int classificacaoEtaria;
     private int duracao;
+    private Cinema cinema;
 
     public Filme(String s, String dublado, String s1, String s2) {
     }
@@ -22,7 +24,20 @@ public class Filme {
         this.duracao = duracao;
     }
 
-    public static void nome() {
+    public Filme(String nome, Idioma idioma, int classificacaoEtaria, int duracao, Cinema cinema) {
+        this.nome = nome;
+        this.idioma = idioma;
+        this.classificacaoEtaria = classificacaoEtaria;
+        this.duracao = duracao;
+        this.cinema = cinema;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -57,13 +72,30 @@ public class Filme {
         this.classificacaoEtaria = classificacaoEtaria;
     }
 
+    public int getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
     @Override
     public String toString() {
-        return "Filme {" +
-                "nome: '" + nome + '\'' +
-                ", idioma: " + idioma +
-                ", classificacaoIndicativa: " + classificacaoEtaria +
-                ", duracao: " + duracao +
+        return "Filme{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", idioma=" + idioma +
+                ", classificacaoEtaria=" + classificacaoEtaria +
+                ", duracao=" + duracao +
                 '}';
     }
 }

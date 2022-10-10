@@ -18,6 +18,8 @@ public class CinemaCrud extends ImplCrud<Cinema> {
                 .findFirst();
 
         if (cinemaRetorno.isEmpty()) {
+            int id = valores.size();
+            cinema.setId(id);
             return valores.add(cinema);
         } else {
             return false;

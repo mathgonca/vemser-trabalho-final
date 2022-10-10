@@ -1,21 +1,28 @@
 package com.br.app.entidades;
 
-import java.util.ArrayList;
-
 public class Cinema {
 
+    private int id;
     private String nome;
     private String estado;
     private String cidade;
-    private ArrayList<Filme> filmes;
 
     public Cinema() {
     }
 
     public Cinema(String nome, String estado, String cidade) {
+        this.id = 0;
         this.nome = nome;
         this.estado = estado;
         this.cidade = cidade;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -42,20 +49,11 @@ public class Cinema {
         this.cidade = cidade;
     }
 
-    public ArrayList<Filme> getFilmes() {
-        return filmes;
-    }
-
-    public void setFilmes(ArrayList<Filme> filmes) {
-        this.filmes = filmes;
-    }
-
     @Override
     public String toString() {
-        return "Cinema{" +
-                "nome='" + nome + '\'' +
+        return "id=" + id  +
+                ", nome='" + nome + '\'' +
                 ", estado='" + estado + '\'' +
-                ", cidade='" + cidade + '\'' +
-                '}';
+                ", cidade='" + cidade + '\'';
     }
 }
