@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class Ingresso {
 
+    private int id;
     private int cadeira;
     private double preco;
     private LocalDateTime dataHora;
@@ -22,12 +23,36 @@ public class Ingresso {
         this.filme = filme;
     }
 
+    public Ingresso(int cadeira, double preco, LocalDateTime dataHora, Filme filme) {
+        this.cadeira = cadeira;
+        this.preco = preco;
+        this.dataHora = dataHora;
+        this.disponibilidade = Disponibilidade.DISPONIVEL;
+        this.filme = filme;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getCadeira() {
         return cadeira;
     }
 
     public void setCadeira(int cadeira) {
         this.cadeira = cadeira;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
 
     public LocalDateTime getDataHora() {
@@ -54,22 +79,14 @@ public class Ingresso {
         this.filme = filme;
     }
 
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
     @Override
     public String toString() {
         return "Ingresso{" +
-                "cadeira=" + cadeira +
+                "id=" + id +
+                ", cadeira=" + cadeira +
                 ", preco=" + preco +
                 ", dataHora=" + dataHora +
                 ", disponibilidade=" + disponibilidade +
-                ", filme=" + filme +
                 '}';
     }
 }

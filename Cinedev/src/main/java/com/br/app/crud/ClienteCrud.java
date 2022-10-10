@@ -13,5 +13,7 @@ public interface ClienteCrud {
 =======
     public List<Ingresso> listaIngressosComprados(Cliente cliente);
 >>>>>>> 7b5359e04cd1a3893882be9930dc8a302b35e8ab
+
+    public Cliente encontrarClientePeloCPF(String cpf);
 }
 

@@ -59,13 +59,15 @@ public class ImplClienteCrudTest {
     public void deveComprarUmIngressoDisponivel() {
         final int TAMANHO_ESPERADO = 1;
 
-        Filme filme = new Filme();
-        Ingresso ingresso = new Ingresso(1, LocalDateTime.now(), filme);
-
         Cliente cliente = new Cliente("Maria", "Assis", "12345678900",
                 23, "maria.assis@dbccompany.com.br");
 
         ImplClienteCrud clienteCrud = new ImplClienteCrud();
+        clienteCrud.adicionar(cliente);
+
+        Filme filme = new Filme();
+        Ingresso ingresso = new Ingresso(1, LocalDateTime.now(), filme);
+
         boolean isIngressoAdd = clienteCrud.adicionarIngresso(cliente, ingresso);
 
         List<Ingresso> clienteIngressoList = cliente.getIngressos();
@@ -110,6 +112,8 @@ public class ImplClienteCrudTest {
                 23, "maria.assis@dbccompany.com.br");
 
         ImplClienteCrud crud = new ImplClienteCrud();
+        crud.adicionar(cliente);
+
         crud.adicionarIngresso(cliente, ingresso01);
         crud.adicionarIngresso(cliente, ingresso02);
         crud.adicionarIngresso(cliente, ingresso03);

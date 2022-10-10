@@ -28,6 +28,7 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
 
     @Override
     public boolean adicionarIngresso(Cliente cliente, Ingresso ingresso) {
+        int indexCliente = valores.indexOf(cliente);
         boolean isDisponivel = ingresso.getDisponibilidade().isDisponibilidade();
 
         if(isDisponivel) {
@@ -37,6 +38,7 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
             ingressoList.add(ingresso);
 
             cliente.setIngressos(ingressoList);
+            valores.set(indexCliente, cliente);
 
             return true;
         } else {
@@ -47,5 +49,15 @@ public class ImplClienteCrud extends ImplCrud<Cliente> implements ClienteCrud {
     @Override
     public List<Ingresso> listaIngressosComprados(Cliente cliente) {
         return cliente.getIngressos();
+    }
+
+    @Override
+    public Cliente encontrarClientePeloCPF(String cpf) {
+        List<Cliente> clienteList = this.listarTodos();
+        Optional<Cliente> clienteOptional = clienteList.stream()
+                .filter(cliente -> cliente.getCpf().equals(cpf))
+                .findFirst();
+
+        return null;
     }
 }

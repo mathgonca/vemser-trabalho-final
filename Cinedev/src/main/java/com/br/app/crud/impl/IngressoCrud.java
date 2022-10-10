@@ -10,6 +10,8 @@ public class IngressoCrud extends ImplCrud<Ingresso> {
 
     @Override
     public boolean adicionar(Ingresso ingresso) {
+        int id = valores.size();
+
         int cadeira = ingresso.getCadeira();
         String filme = ingresso.getFilme().getNome();
         LocalDateTime dataHora = ingresso.getDataHora();
@@ -22,9 +24,24 @@ public class IngressoCrud extends ImplCrud<Ingresso> {
                 .findFirst();
 
         if (ingressoRetorno.isEmpty()) {
+            ingresso.setId(id);
             return valores.add(ingresso);
         } else {
             return false;
         }
+    }
+
+    public boolean update(Ingresso ingresso) {
+        int id = (ingresso.getId());
+
+        valores.set(id, ingresso);
+
+        return true;
+    }
+
+    public Optional<Ingresso> listarPorId(int id) {
+        return valores.stream()
+                .filter(ingresso -> ingresso.getId() == id)
+                .findFirst();
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Cliente {
 
+    private int id;
     private String primeiroNome;
     private String ultimoNome;
     private String cpf;

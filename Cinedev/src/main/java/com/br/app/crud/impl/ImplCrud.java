@@ -28,4 +28,9 @@ public class ImplCrud<T> implements Crud<T> {
     public T listarPeloId(int i) {
         return valores.get(i);
     }
+
+    @Override
+    public void update(int i, T obj) {
+        valores.set(i, obj);
+    }
 }

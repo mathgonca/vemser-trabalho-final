@@ -11,4 +11,6 @@ public interface Crud<T> {
     public List<T> listarTodos();
 
     public T listarPeloId(int i);
+
+    public void update(int i, T obj);
 }
