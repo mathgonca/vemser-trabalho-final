@@ -1,15 +1,15 @@
 package com.br.dbc.app.model.enums;
 
 public enum Disponibilidade {
-    DISPONIVEL(true), INDISPONIVEL(false);
+    DISPONIVEL("S"), INDISPONIVEL("N");
 
-    private final boolean disponibilidade;
+    private final String disponibilidade;
 
-    Disponibilidade(boolean descricao) {
+    Disponibilidade(String descricao) {
         this.disponibilidade = descricao;
     }
 
-    public boolean isDisponibilidade() {
+    public String isDisponibilidade() {
         return disponibilidade;
     }
 }

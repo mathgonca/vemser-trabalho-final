@@ -27,12 +27,12 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
         try {
             conexao = ConexaoDadosCineDev.getConnection();
             Integer chaveID = this.getProximoId(conexao);
-            cinema.setId(chaveID);
+            cinema.setIdCinema(chaveID);
 
             String sql = "INSERT INTO CINEMA (ID_CINEMA, NOME, ESTADO, CIDADE)\n" +
                     "values (?, ?, ?, ?):";
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setInt(1, cinema.getId());
+            pst.setInt(1, cinema.getIdCinema());
             pst.setString(2, cinema.getNome());
             pst.setString(3, cinema.getEstado());
             pst.setString(4, cinema.getCidade());
@@ -135,7 +135,7 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             ResultSet ret = stat.executeQuery(sql);
             while(ret.next()){
                 Cinema cinema = new Cinema();
-                cinema.setId(ret.getInt("ID_CINEMA"));
+                cinema.setIdCinema(ret.getInt("ID_CINEMA"));
                 cinema.setNome(ret.getString("NOME"));
                 cinema.setEstado(ret.getString("ESTADO"));
                 cinema.setCidade(ret.getString("CIDADE"));

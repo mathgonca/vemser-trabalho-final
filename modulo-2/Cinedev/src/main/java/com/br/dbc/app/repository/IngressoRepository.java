@@ -1,10 +1,15 @@
 package com.br.dbc.app.repository;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
+import com.br.dbc.app.model.Cinema;
+import com.br.dbc.app.model.Cliente;
 import com.br.dbc.app.model.Filme;
 import com.br.dbc.app.model.Ingresso;
+import com.br.dbc.app.model.enums.Disponibilidade;
+import com.br.dbc.app.model.enums.Idioma;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngressoRepository implements Repository<Integer, Ingresso> {
@@ -22,10 +27,23 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
     }
 
     @Override
-    public Ingresso adicionar(Ingresso ingresso) throws BancoDeDadosException {
+    public Ingresso adicionar(Ingresso object) throws BancoDeDadosException {
+        return null;
+    }
+
+
+    @Override
+    public Ingresso adicionar(Ingresso ingresso, Cliente cliente, Cinema cinema, Filme filme) throws BancoDeDadosException {
         Connection conexao = null;
+//        Cliente cliente = new Cliente();
+//        Cinema cinema = new Cinema();
+//        Filme filme = new Filme();
+//        ClienteRepository clienteRepository = new ClienteRepository();
+//        CinemaRepository cinemaRepository = new CinemaRepository();
+//        FilmeRepository filmeRepository = new FilmeRepository();
         try{
             conexao = ConexaoDadosCineDev.getConnection();
+
 
             Integer chaveId = this.getProximoId(conexao);
             ingresso.setIdIngresso(chaveId);
@@ -34,13 +52,13 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, ingresso.getIdIngresso());
-            pst.setInt(2,ingresso.getCinema().getIdCinema());
-            pst.setInt(3,  ingresso.getFilme().getIdFilme());
-            pst.setInt(4, ingresso.getCliente().getIdCliente());
+            pst.setInt(2,cinema.getIdCinema());
+            pst.setInt(3,  filme.getIdFilme());
+            pst.setInt(4, cliente.getIdCliente());
             pst.setDouble(5, ingresso.getPreco());
             pst.setInt(6, ingresso.getCadeira());
             pst.setTimestamp(7, ingresso.getDataHora());
-            pst.setBoolean(8, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
 
             int ret = pst.executeUpdate();
             if(ret==0){
@@ -102,7 +120,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             pst.setDouble(5, ingresso.getPreco());
             pst.setInt(6, ingresso.getCadeira());
             pst.setTimestamp(7, ingresso.getDataHora());
-            pst.setBoolean(8, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
             pst.setInt(5, id);
 
             int ret = pst.executeUpdate();
@@ -127,6 +145,98 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
 
     @Override
     public List<Ingresso> listar() throws BancoDeDadosException {
-        return null;
+        List<Ingresso> listarIngresso = new ArrayList<>();
+        Connection conexao = null;
+        try{
+            conexao = ConexaoDadosCineDev.getConnection();
+            Statement stmt = conexao.createStatement();
+            String sql = "SELECT * FROM INGRESSO";
+            ResultSet res = stmt.executeQuery(sql);
+            while(res.next()){
+                Ingresso ingresso = new Ingresso();
+                ingresso.getCliente().setIdCliente(res.getInt("ID_CLIENTE"));
+                ingresso.setNome(ret.getString("NOME"));
+                ingresso.setIdioma(Idioma.valueOf(ret.getString("IDIOMA")));
+                ingresso.setClassificacaoEtaria(ret.getInt("CLASSIFICACAO"));
+                ingresso.setDuracao(ret.getInt("DURACAO"));
+                listarIngresso.add(ingresso);
+            }
+
+            return listarIngresso;
+        }catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (conexao != null) {
+                    conexao.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<Ingresso> listarIngressoComCliente(Integer idCliente, Integer idCinema, Integer idFilme) throws SQLException{
+            List<Ingresso> ingressosEclientes = new ArrayList<>();
+            Connection conexao = null;
+
+            try{
+
+                String sql = "SELECT C.PRIMEIRO_NOME, C.CPF, C.EMAIL, F.NOME AS FILME, F.DURACAO, CM.NOME AS CINEMA, I.VALOR, I.CADEIRA, I.DATA_HORA, I.DISPONIBLIDADE \n" +
+                        "FROM CLIENTE C\n" +
+                        "INNER JOIN INGRESSO I ON C.ID_CLIENTE = I.ID_CLIENTE \n" +
+                        "INNER JOIN FILME F ON I.ID_FILME = F.ID_FILME \n" +
+                        "INNER JOIN CINEMA CM ON I.ID_CINEMA = CM.ID_CINEMA";
+
+                PreparedStatement stmt = conexao.prepareStatement(sql);
+                ResultSet res = stmt.executeQuery(sql);
+                while(res.next()){
+                    Ingresso ingresso = getIngressoResultSet(res);
+                    ingressosEclientes.add(ingresso);
+                }
+
+                return ingressosEclientes;
+
+            }catch (SQLException e) {
+                throw new BancoDeDadosException(e.getCause());
+            } finally {
+                try {
+                    if (conexao != null) {
+                        conexao.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+    }
+
+    public Ingresso getIngressoResultSet(ResultSet res) throws SQLException {
+
+        Ingresso ingresso = new Ingresso();
+        Cliente cliente = new Cliente();
+        Filme filme = new Filme();
+        Cinema cinema = new Cinema();
+
+        ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
+        cliente.setIdCliente(res.getInt(res.getInt("ID_CLIENTE")));
+        filme.setIdFilme(res.getInt("ID_FILME"));
+        cinema.setIdCinema(res.getInt("ID_CINEMA"));
+
+        ingresso.setPreco(res.getInt("VALOR"));
+        ingresso.setCadeira(res.getInt("CADEIRA"));
+        ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
+        ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBILIDADE")));
+
+        cliente.setPrimeiroNome(res.getString("PRIMEIRO_NOME"));
+        cliente.setCpf(res.getString("CPF"));
+        cliente.setEmail(res.getString("EMAIL"));
+
+        filme.setNome(res.getString("FILME"));
+        filme.setDuracao(res.getInt("DURACACAO"));
+
+        cinema.setNome(res.getString("CINEMA"));
+
+        return ingresso;
     }
 }

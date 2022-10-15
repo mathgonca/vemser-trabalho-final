@@ -2,7 +2,7 @@ package com.br.dbc.app.model.enums;
 
 public enum Idioma {
 
-    DUBLADO("DUB"), LEGENDADO("LEG");
+    DUBLADO("DUBLADO"), LEGENDADO("LEGENDADO");
 
     private final String idioma;
 
