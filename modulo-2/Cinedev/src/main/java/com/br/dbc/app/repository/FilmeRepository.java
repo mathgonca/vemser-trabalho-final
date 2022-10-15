@@ -12,11 +12,11 @@ public class FilmeRepository implements Repository<Integer, Filme>{
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
 
-        String sql = "SELECT SEQ_ID_FILME.nextval sequencia FROM FILME";
+        String sql = "SELECT SEQ_ID_FILME2.nextval sequence FROM DUAL";
         Statement stat = connection.createStatement();
         ResultSet rest = stat.executeQuery(sql);
         if(rest.next()){
-            rest.getInt("sequencia");
+            rest.getInt("sequence");
         }
         return null;
     }
@@ -26,13 +26,14 @@ public class FilmeRepository implements Repository<Integer, Filme>{
         Connection conexao = null;
         try{
             conexao = ConexaoDadosCineDev.getConnection();
+
             Integer chaveId = this.getProximoId(conexao);
-            filme.setId(chaveId);
+           filme.setIdFilme(chaveId);
 
             String sql = "INSERT INTO FILME (ID_FILME, NOME, IDIOMA, CLASSIFICACAO, DURACAO)\n" +
                     "VALUES (?, ?, ?, ?, ?);";
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setInt(1, filme.getId());
+            pst.setInt(1, filme.getIdFilme());
             pst.setString(2, filme.getNome());
             pst.setString(3, filme.getIdioma().getIdioma());
             pst.setInt(4, filme.getClassificacaoEtaria());
@@ -135,9 +136,8 @@ public class FilmeRepository implements Repository<Integer, Filme>{
             ResultSet ret = stat.executeQuery(sql);
             while(ret.next()){
                 Filme filme = new Filme();
-                filme.setId(ret.getInt("ID_FILME"));
+                filme.setIdFilme(ret.getInt("ID_FILME"));
                 filme.setNome(ret.getString("NOME"));
-//                filme.setIdioma(ret.getObject("IDIOMA", Idioma.class));
                 filme.setIdioma(Idioma.valueOf(ret.getString("IDIOMA")));
                 filme.setClassificacaoEtaria(ret.getInt("CLASSIFICACAO"));
                 filme.setDuracao(ret.getInt("DURACAO"));

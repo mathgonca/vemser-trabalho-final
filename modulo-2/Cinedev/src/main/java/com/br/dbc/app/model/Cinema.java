@@ -2,27 +2,19 @@ package com.br.dbc.app.model;
 
 public class Cinema {
 
-    private int id;
+    private Integer idCinema;
     private String nome;
     private String estado;
     private String cidade;
 
-    public Cinema() {
+
+
+    public int getIdCinema() {
+        return idCinema;
     }
 
-    public Cinema(String nome, String estado, String cidade) {
-        this.id = 0;
-        this.nome = nome;
-        this.estado = estado;
-        this.cidade = cidade;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setIdCinema(int id) {
+        this.idCinema = id;
     }
 
     public String getNome() {
@@ -51,7 +43,7 @@ public class Cinema {
 
     @Override
     public String toString() {
-        return "id=" + id  +
+        return "id=" + idCinema  +
                 ", nome='" + nome + '\'' +
                 ", estado='" + estado + '\'' +
                 ", cidade='" + cidade + '\'';

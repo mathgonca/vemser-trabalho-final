@@ -2,41 +2,27 @@ package com.br.dbc.app.model;
 
 import com.br.dbc.app.model.enums.Disponibilidade;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Ingresso {
 
-    private int id;
+    private Integer idIngresso;
     private int cadeira;
     private double preco;
-    private LocalDateTime dataHora;
+    private Timestamp dataHora;
     private Disponibilidade disponibilidade;
     private Filme filme;
+    private Cinema cinema;
+    private Cliente cliente;
 
-    public Ingresso() {
+
+    public int getIdIngresso() {
+        return idIngresso;
     }
 
-    public Ingresso(int cadeira, LocalDateTime dataHora, Filme filme) {
-        this.cadeira = cadeira;
-        this.dataHora = dataHora;
-        this.disponibilidade = Disponibilidade.DISPONIVEL;
-        this.filme = filme;
-    }
-
-    public Ingresso(int cadeira, double preco, LocalDateTime dataHora, Filme filme) {
-        this.cadeira = cadeira;
-        this.preco = preco;
-        this.dataHora = dataHora;
-        this.disponibilidade = Disponibilidade.DISPONIVEL;
-        this.filme = filme;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setIdIngresso(Integer id) {
+        this.idIngresso = id;
     }
 
     public int getCadeira() {
@@ -55,11 +41,11 @@ public class Ingresso {
         this.preco = preco;
     }
 
-    public LocalDateTime getDataHora() {
+    public Timestamp getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
+    public void setDataHora(Timestamp dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -79,10 +65,26 @@ public class Ingresso {
         this.filme = filme;
     }
 
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     @Override
     public String toString() {
         return "Ingresso{" +
-                "id=" + id +
+                "id=" + idIngresso +
                 ", cadeira=" + cadeira +
                 ", preco=" + preco +
                 ", dataHora=" + dataHora +

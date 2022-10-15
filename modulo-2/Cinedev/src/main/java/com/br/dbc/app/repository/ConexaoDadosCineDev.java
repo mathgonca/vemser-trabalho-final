@@ -6,10 +6,9 @@ import java.sql.SQLException;
 
 public class ConexaoDadosCineDev {
     private static final String SERVER = "localhost";
-    private static final String PORT = "1521"; // Porta TCP padrão do Oracle
+    private static final String PORT = "1521";
     private static final String DATABASE = "xe";
 
-    // Configuração dos parâmetros de autenticação
     private static final String USER = "system";
     private static final String PASS = "oracle";
 
