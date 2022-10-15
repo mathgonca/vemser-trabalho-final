@@ -1,10 +1,19 @@
 package com.br.dbc.app.view.cliente;
 
+import com.br.dbc.app.exceptions.BancoDeDadosException;
+import com.br.dbc.app.exceptions.ClienteNaoEncontradoException;
+import com.br.dbc.app.exceptions.CpfInvalidoException;
+import com.br.dbc.app.model.Cliente;
+import com.br.dbc.app.service.ClienteService;
+
 import java.util.Scanner;
 
+import static com.br.dbc.app.view.cliente.ClienteCadastroView.menuClienteCadastro;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class ClienteView {
+
+    static ClienteService clienteService = new ClienteService();
 
     private ClienteView() {
         throw new IllegalStateException("Classe útil");
@@ -14,6 +23,8 @@ public class ClienteView {
         final int CADASTRAR_CLIENTE = 1;
         final int LOGAR = 2;
         final int SAIR = 0;
+
+        Cliente clienteLogado = null;
 
         Scanner scanner = new Scanner(System.in);
 
@@ -27,32 +38,46 @@ public class ClienteView {
             opcao = Integer.parseInt(scanner.nextLine());
             switch (opcao) {
                 case CADASTRAR_CLIENTE:
-                    System.out.println(formatarTitulo("Cadastrar cliente"));
+                    menuClienteCadastro();
                     break;
                 case LOGAR:
-                    final int ESCOLHER_CINEMA = 1;
-                    final int LISTAR_INGRESSOS = 2;
+                    System.out.println(formatarTitulo("Login"));
 
-                    System.out.println(formatarTitulo("CLIENTE LOGADO"));
-                    System.out.println("1 - Escolher um cinema");
-                    System.out.println("2 - Listar ingressos comprados");
-                    System.out.println("0 - Para SAIR");
+                    System.out.print("Digite o seu CPF: ");
+                    try {
+                        String cpf = scanner.nextLine();
+                        clienteLogado = clienteService.logarCliente(cpf);
+                    } catch (CpfInvalidoException | BancoDeDadosException | ClienteNaoEncontradoException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                    int opcao3 = Integer.parseInt(scanner.nextLine());
-                    switch (opcao3) {
-                        case ESCOLHER_CINEMA:
-                            System.out.println(formatarTitulo("CINEMAS DISPONIVEIS"));
-                            // LISTAR CINEMAS DISPONIVEIS
-                            System.out.print("Digite o ID do cinema escolhido: ");
-                            break;
-                        case LISTAR_INGRESSOS:
-                            System.out.println(formatarTitulo("LISTA DE INGRESSOS"));
-                            break;
-                        case SAIR:
-                            break;
-                        default:
-                            System.err.println("Opção inválida!");
-                            break;
+                    while (clienteLogado != null) {
+                        final int ESCOLHER_CINEMA = 1;
+                        final int LISTAR_INGRESSOS = 2;
+
+                        System.out.println(formatarTitulo("CLIENTE LOGADO"));
+                        System.out.println("Clinte logado: " + clienteLogado.getPrimeiroNome() + " " + clienteLogado.getUltimoNome());
+                        System.out.println("1 - Escolher um cinema");
+                        System.out.println("2 - Listar ingressos comprados");
+                        System.out.println("0 - Para SAIR");
+
+                        int opcao3 = Integer.parseInt(scanner.nextLine());
+                        switch (opcao3) {
+                            case ESCOLHER_CINEMA:
+                                System.out.println(formatarTitulo("CINEMAS DISPONIVEIS"));
+                                // LISTAR CINEMAS DISPONIVEIS
+                                System.out.print("Digite o ID do cinema escolhido: ");
+                                break;
+                            case LISTAR_INGRESSOS:
+                                System.out.println(formatarTitulo("LISTA DE INGRESSOS"));
+                                break;
+                            case SAIR:
+                                clienteLogado = null;
+                                break;
+                            default:
+                                System.err.println("Opção inválida!");
+                                break;
+                        }
                     }
                     break;
                 case SAIR:

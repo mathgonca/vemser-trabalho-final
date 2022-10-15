@@ -2,8 +2,6 @@ package com.br.dbc.app.view;
 
 import java.util.Scanner;
 
-import static com.br.app.view.cinema.CinemaView.menuCinema;
-import static com.b.app.view.cliente.ClienteView.menuCliente;
 import static com.br.dbc.app.view.cinema.CinemaView.menuCinema;
 import static com.br.dbc.app.view.cliente.ClienteView.menuCliente;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
