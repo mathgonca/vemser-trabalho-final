@@ -12,9 +12,8 @@ public class Filme {
 
     private int classificacaoEtaria;
     private int duracao;
-    private Cinema cinema;
 
-    public Filme(String s, String dublado, String s1, String s2) {
+    public Filme() {
     }
 
     public Filme(String nome, Idioma idioma, int classificacaoIndicativa, int duracao) {
@@ -22,14 +21,6 @@ public class Filme {
         this.idioma = idioma;
         this.classificacaoEtaria = classificacaoIndicativa;
         this.duracao = duracao;
-    }
-
-    public Filme(String nome, Idioma idioma, int classificacaoEtaria, int duracao, Cinema cinema) {
-        this.nome = nome;
-        this.idioma = idioma;
-        this.classificacaoEtaria = classificacaoEtaria;
-        this.duracao = duracao;
-        this.cinema = cinema;
     }
 
     public int getId() {
@@ -72,13 +63,6 @@ public class Filme {
         this.duracao = duracao;
     }
 
-    public Cinema getCinema() {
-        return cinema;
-    }
-
-    public void setCinema(Cinema cinema) {
-        this.cinema = cinema;
-    }
 
     @Override
     public String toString() {
