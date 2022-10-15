@@ -1,7 +1,6 @@
 package com.br.dbc.app.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 public class Cliente {
 
@@ -9,9 +8,19 @@ public class Cliente {
     private String primeiroNome;
     private String ultimoNome;
     private String cpf;
-    private int idade;
+    private LocalDate dataNascimento;
     private String email;
-    private List<Ingresso> ingressos = new ArrayList<>();
+
+    public Cliente() {
+    }
+
+    public Cliente(String primeiroNome, String ultimoNome, String cpf, LocalDate dataNascimento, String email) {
+        this.primeiroNome = primeiroNome;
+        this.ultimoNome = ultimoNome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.email = email;
+    }
 
     public Integer getIdCliente() {
         return idCliente;
@@ -45,12 +54,12 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-    public int getIdade() {
-        return idade;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getEmail() {
@@ -61,21 +70,14 @@ public class Cliente {
         this.email = email;
     }
 
-    public List<Ingresso> getIngressos() {
-        return ingressos;
-    }
-
-    public void setIngressos(List<Ingresso> ingressos) {
-        this.ingressos = ingressos;
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +
-                "primeiroNome='" + primeiroNome + '\'' +
+                "idCliente=" + idCliente +
+                ", primeiroNome='" + primeiroNome + '\'' +
                 ", ultimoNome='" + ultimoNome + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", idade=" + idade +
+                ", dataNascimento=" + dataNascimento +
                 ", email='" + email + '\'' +
                 '}';
     }
