@@ -2,9 +2,11 @@ package com.br.dbc.app.view;
 
 import java.util.Scanner;
 
-import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 import static com.br.app.view.cinema.CinemaView.menuCinema;
 import static com.br.app.view.cliente.ClienteView.menuCliente;
+import static com.br.dbc.app.view.cinema.CinemaView.menuCinema;
+import static com.br.dbc.app.view.cliente.ClienteView.menuCliente;
+import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class Main {
     public static void main(String[] args) {
