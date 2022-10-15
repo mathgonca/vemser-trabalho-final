@@ -4,6 +4,7 @@ import com.br.dbc.app.exceptions.BancoDeDadosException;
 import com.br.dbc.app.model.Cinema;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CinemaRepository implements Repository< Integer, Cinema>{
@@ -85,19 +86,74 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             }
         }
     }
-//
-// adicionei os metedos abaixo pois a linha 8 ficava reclamando sem os metodos
-    @Override
+
     public boolean editar(Integer id, Cinema cinema) throws BancoDeDadosException {
-        return false;
+        Connection conexao = null;
+        try{
+            conexao = ConexaoDadosCineDev.getConnection();
+
+
+            String sql = "UPDATE CINEMA SET NOME = ?, ESTADO = ?," +
+                    "CIDADE = ? WHERE ID_CINEMA = ?";
+
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, cinema.getNome());
+            pst.setString(2, cinema.getEstado());
+            pst.setString(3, cinema.getCidade());
+            pst.setInt(4, id);
+
+            int ret = pst.executeUpdate();
+            if(ret==0){
+                System.out.println("Não foi possível realizar a alteração do Cinema!");
+            }
+            System.out.println("O Cinema foi alterado com sucesso!");
+            return ret>0;
+
+        }catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (conexao != null) {
+                    conexao.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public List<Cinema> listar() throws BancoDeDadosException {
-        return null;
+        List<Cinema> listaCinema = new ArrayList<>();
+        Connection conexao = null;
+        try{
+            conexao = ConexaoDadosCineDev.getConnection();
+            Statement stat = conexao.createStatement();
+
+            String sql = "SELECT * FROM CINEMA";
+
+            ResultSet ret = stat.executeQuery(sql);
+            while(ret.next()){
+                Cinema cinema = new Cinema();
+                cinema.setId(ret.getInt("ID_CINEMA"));
+                cinema.setNome(ret.getString("NOME"));
+                cinema.setEstado(ret.getString("ESTADO"));
+                cinema.setCidade(ret.getString("CIDADE"));
+                listaCinema.add(cinema);
+            }
+
+        }catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (conexao != null) {
+                    conexao.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return listaCinema;
     }
 }
-
-
-
 
