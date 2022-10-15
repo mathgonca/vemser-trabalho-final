@@ -12,12 +12,23 @@ public class FilmeRepository implements Repository<Integer, Filme>{
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
 
-        String sql = "SELECT SEQ_ID_FILME2.nextval sequence FROM DUAL";
-        Statement stat = connection.createStatement();
-        ResultSet rest = stat.executeQuery(sql);
-        if(rest.next()){
-            rest.getInt("sequence");
+//        String sql = "SELECT SEQ_ID_FILME.nextval mysequence from DUAL";
+//        Statement stat = connection.createStatement();
+//        ResultSet rest = stat.executeQuery(sql);
+//        if(rest.next()){
+//            rest.getInt("mysequence");
+//        }
+//        return null;
+
+        String sql = "SELECT SEQ_ID_FILME.nextval mysequence from DUAL";
+
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery(sql);
+
+        if (res.next()) {
+            return res.getInt("mysequence");
         }
+
         return null;
     }
 
