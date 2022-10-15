@@ -85,6 +85,7 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             }
         }
     }
+//
 // adicionei os metedos abaixo pois a linha 8 ficava reclamando sem os metodos
     @Override
     public boolean editar(Integer id, Cinema cinema) throws BancoDeDadosException {
