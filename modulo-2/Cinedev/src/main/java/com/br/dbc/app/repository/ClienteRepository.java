@@ -7,6 +7,7 @@ import com.br.dbc.app.model.Cliente;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClienteRepository implements Repository<Integer, Cliente> {
     @Override
@@ -208,7 +209,8 @@ public class ClienteRepository implements Repository<Integer, Cliente> {
         return cliente;
     }
 
-    public Cliente listarClientePorCPF(String cpf) throws BancoDeDadosException, ClienteNaoEncontradoException {
+    public Optional<Cliente> listarClientePorCPF(String cpf) throws BancoDeDadosException {
+        Optional<Cliente> clienteOptional = Optional.empty();
         Cliente cliente = new Cliente();
         Connection con = null;
         try {
@@ -231,8 +233,8 @@ public class ClienteRepository implements Repository<Integer, Cliente> {
                 cliente.setCpf(res.getString("CPF"));
                 cliente.setDataNascimento(res.getDate("DATA_NASCIMENTO").toLocalDate());
                 cliente.setEmail(res.getString("EMAIL"));
-            } else {
-                throw new ClienteNaoEncontradoException("Cliente com CPF: " + cpf + " não foi encontrado!");
+
+                clienteOptional = Optional.of(cliente);
             }
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -245,6 +247,47 @@ public class ClienteRepository implements Repository<Integer, Cliente> {
                 e.printStackTrace();
             }
         }
-        return cliente;
+        return clienteOptional;
+    }
+
+     public Optional<Cliente> listarClientePorEmail(String cpf) throws BancoDeDadosException {
+        Optional<Cliente> clienteOptional = Optional.empty();
+        Cliente cliente = new Cliente();
+        Connection con = null;
+        try {
+            con = ConexaoDadosCineDev.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM CLIENTE c");
+            sql.append(" WHERE c.EMAIL = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setString(1, cpf);
+
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                cliente.setIdCliente(res.getInt("ID_CLIENTE"));
+                cliente.setPrimeiroNome(res.getString("PRIMEIRO_NOME"));
+                cliente.setUltimoNome(res.getString("ULTIMO_NOME"));
+                cliente.setCpf(res.getString("CPF"));
+                cliente.setDataNascimento(res.getDate("DATA_NASCIMENTO").toLocalDate());
+                cliente.setEmail(res.getString("EMAIL"));
+
+                clienteOptional = Optional.of(cliente);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return clienteOptional;
     }
 }
