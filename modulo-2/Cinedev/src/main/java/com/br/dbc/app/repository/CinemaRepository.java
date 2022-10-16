@@ -10,28 +10,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CinemaRepository implements Repository< Integer, Cinema>{
+public class CinemaRepository implements Repository<Integer, Cinema> {
 
-    public Integer getProximoId( Connection connection) throws SQLException{
+    public Integer getProximoId(Connection connection) throws SQLException {
 
         String sql = "SELECT SEQ_ID_CINEMA.NEXTVAL SEQUENCIA FROM CINEMA";
         Statement stat = connection.createStatement();
         ResultSet rest = stat.executeQuery(sql);
-        if(rest.next()){
+        if (rest.next()) {
             rest.getInt("sequencia");
 
         }
         return null;
     }
 
-@Override
+    @Override
     public Cinema adicionar(Cinema cinema) throws BancoDeDadosException {
         Connection conexao = null;
         try {
             conexao = ConexaoDadosCineDev.getConnection();
             Integer chaveID = this.getProximoId(conexao);
 
+
             cinema.setIdCinema(chaveID);
+
 
 
             String sql = "INSERT INTO CINEMA (ID_CINEMA, NOME, ESTADO, CIDADE)\n" +
@@ -55,7 +57,7 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
-                if (conexao != null){
+                if (conexao != null) {
                     conexao.close();
                 }
             } catch (SQLException e) {
@@ -86,14 +88,14 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             }
             System.out.println("O cinema foi removido com sucesso");
             return ret > 0;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
-            }finally {
+        } finally {
             try {
-                if (conexao != null){
+                if (conexao != null) {
                     conexao.close();
                 }
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -101,7 +103,7 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
 
     public boolean editar(Integer id, Cinema cinema) throws BancoDeDadosException {
         Connection conexao = null;
-        try{
+        try {
             conexao = ConexaoDadosCineDev.getConnection();
 
 
@@ -115,13 +117,13 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
             pst.setInt(4, id);
 
             int ret = pst.executeUpdate();
-            if(ret==0){
+            if (ret == 0) {
                 System.out.println("Não foi possível realizar a alteração do Cinema!");
             }
             System.out.println("O Cinema foi alterado com sucesso!");
-            return ret>0;
+            return ret > 0;
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
@@ -138,14 +140,14 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
     public List<Cinema> listar() throws BancoDeDadosException {
         List<Cinema> listaCinema = new ArrayList<>();
         Connection conexao = null;
-        try{
+        try {
             conexao = ConexaoDadosCineDev.getConnection();
             Statement stat = conexao.createStatement();
 
             String sql = "SELECT * FROM CINEMA";
 
             ResultSet ret = stat.executeQuery(sql);
-            while(ret.next()){
+            while (ret.next()) {
                 Cinema cinema = new Cinema();
 
                 cinema.setIdCinema(ret.getInt("ID_CINEMA"));
@@ -156,7 +158,7 @@ public class CinemaRepository implements Repository< Integer, Cinema>{
                 listaCinema.add(cinema);
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
