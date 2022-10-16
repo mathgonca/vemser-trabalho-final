@@ -12,7 +12,7 @@ import com.br.dbc.app.service.FilmeService;
 import com.br.dbc.app.service.IngressoService;
 import com.br.dbc.app.view.cliente.ClienteView;
 
-public class Main {
+public class tests {
     public static void main(String[] args) throws BancoDeDadosException {
 //        FilmeService filme = new FilmeService();
 //        Filme filme1 = new Filme();
