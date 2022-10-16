@@ -9,13 +9,13 @@ import java.util.List;
 public class CinemaService {
 
 
-    private CinemaRepository cinemaRepository;
+    private static CinemaRepository cinemaRepository;
 
     public CinemaService() {
         cinemaRepository = new CinemaRepository();
     }
 
-    public void adicionarCinema(Cinema cinema) {
+    public static void adicionarCinema(Cinema cinema) {
 
         try {
 
@@ -30,7 +30,7 @@ public class CinemaService {
         }
     }
 
-    public void removerCinema(Integer id) {
+    public static void removerCinema(Integer id) {
         try {
             boolean realizouRemover = cinemaRepository.remover(id);
 
@@ -40,7 +40,7 @@ public class CinemaService {
 
     }
 
-    public void editarCinema(Integer id, Cinema cinema) {
+    public static void editarCinema(Integer id, Cinema cinema) {
         try {
             boolean realizouEditar = cinemaRepository.editar(id, cinema);
 
@@ -50,7 +50,7 @@ public class CinemaService {
 
     }
 
-    public void listarCinema() {
+    public static void listarCinema() {
         try {
             List<Cinema> list = cinemaRepository.listar();
             list.forEach(System.out::println);
