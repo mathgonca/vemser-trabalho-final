@@ -154,11 +154,17 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             ResultSet res = stmt.executeQuery(sql);
             while(res.next()){
                 Ingresso ingresso = new Ingresso();
-                ingresso.getCliente().setIdCliente(res.getInt("ID_CLIENTE"));
-                ingresso.setNome(ret.getString("NOME"));
-                ingresso.setIdioma(Idioma.valueOf(ret.getString("IDIOMA")));
-                ingresso.setClassificacaoEtaria(ret.getInt("CLASSIFICACAO"));
-                ingresso.setDuracao(ret.getInt("DURACAO"));
+                Cliente cliente = new Cliente();
+                Cinema cinema = new Cinema();
+                Filme filme = new Filme();
+                ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
+                filme.setIdFilme(res.getInt("ID_FILME"));
+                cliente.setIdCliente(res.getInt("ID_CLIENTE"));
+                cinema.setIdCinema(res.getInt("ID_CINEMA"));
+                ingresso.setPreco(res.getDouble("VALOR"));
+                ingresso.setCadeira(res.getInt("CADEIRA"));
+                ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
+                ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
                 listarIngresso.add(ingresso);
             }
 
@@ -176,23 +182,27 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         }
     }
 
-    public List<Ingresso> listarIngressoComCliente(Integer idCliente, Integer idCinema, Integer idFilme) throws SQLException{
+    public List<Ingresso> listarIngressoComCliente() throws SQLException{
             List<Ingresso> ingressosEclientes = new ArrayList<>();
             Connection conexao = null;
 
             try{
+                conexao = ConexaoDadosCineDev.getConnection();
 
-                String sql = "SELECT C.PRIMEIRO_NOME, C.CPF, C.EMAIL, F.NOME AS FILME, F.DURACAO, CM.NOME AS CINEMA, I.VALOR, I.CADEIRA, I.DATA_HORA, I.DISPONIBLIDADE \n" +
+                String sql = "SELECT I.ID_INGRESSO, C.ID_CLIENTE, C.PRIMEIRO_NOME AS NOME, C.CPF, C.EMAIL, F.ID_FILME, F.NOME AS FILME, F.DURACAO, " +
+                        "CM.ID_CINEMA, CM.NOME AS CINEMA, I.VALOR, I.CADEIRA, I.DATA_HORA, I.DISPONIBLIDADE \n" +
                         "FROM CLIENTE C\n" +
-                        "INNER JOIN INGRESSO I ON C.ID_CLIENTE = I.ID_CLIENTE \n" +
-                        "INNER JOIN FILME F ON I.ID_FILME = F.ID_FILME \n" +
-                        "INNER JOIN CINEMA CM ON I.ID_CINEMA = CM.ID_CINEMA";
+                        "INNER JOIN INGRESSO I ON (C.ID_CLIENTE = I.ID_CLIENTE) \n" +
+                        "INNER JOIN FILME F ON (I.ID_FILME = F.ID_FILME) \n" +
+                        "INNER JOIN CINEMA CM ON (I.ID_CINEMA = CM.ID_CINEMA)";
 
                 PreparedStatement stmt = conexao.prepareStatement(sql);
+
                 ResultSet res = stmt.executeQuery(sql);
                 while(res.next()){
                     Ingresso ingresso = getIngressoResultSet(res);
                     ingressosEclientes.add(ingresso);
+
                 }
 
                 return ingressosEclientes;
@@ -219,21 +229,21 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         Cinema cinema = new Cinema();
 
         ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
-        cliente.setIdCliente(res.getInt(res.getInt("ID_CLIENTE")));
+        cliente.setIdCliente(res.getInt("ID_CLIENTE"));
         filme.setIdFilme(res.getInt("ID_FILME"));
         cinema.setIdCinema(res.getInt("ID_CINEMA"));
 
         ingresso.setPreco(res.getInt("VALOR"));
         ingresso.setCadeira(res.getInt("CADEIRA"));
         ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
-        ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBILIDADE")));
+        ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
 
-        cliente.setPrimeiroNome(res.getString("PRIMEIRO_NOME"));
+        cliente.setPrimeiroNome(res.getString("NOME"));
         cliente.setCpf(res.getString("CPF"));
         cliente.setEmail(res.getString("EMAIL"));
 
         filme.setNome(res.getString("FILME"));
-        filme.setDuracao(res.getInt("DURACACAO"));
+        filme.setDuracao(res.getInt("DURACAO"));
 
         cinema.setNome(res.getString("CINEMA"));
 

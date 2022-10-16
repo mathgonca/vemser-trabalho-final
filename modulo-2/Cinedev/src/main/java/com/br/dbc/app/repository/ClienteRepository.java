@@ -2,7 +2,10 @@ package com.br.dbc.app.repository;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
 import com.br.dbc.app.exceptions.ClienteNaoEncontradoException;
+import com.br.dbc.app.model.Cinema;
 import com.br.dbc.app.model.Cliente;
+import com.br.dbc.app.model.Filme;
+import com.br.dbc.app.model.Ingresso;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,6 +64,11 @@ public class ClienteRepository implements Repository<Integer, Cliente> {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public Ingresso adicionar(Ingresso ingresso, Cliente cliente, Cinema cinema, Filme filme) throws BancoDeDadosException {
+        return null;
     }
 
     @Override

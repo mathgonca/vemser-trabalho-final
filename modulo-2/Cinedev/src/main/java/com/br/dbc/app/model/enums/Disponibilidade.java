@@ -1,7 +1,7 @@
 package com.br.dbc.app.model.enums;
 
 public enum Disponibilidade {
-    DISPONIVEL("S"), INDISPONIVEL("N");
+    S("S"), N("N");
 
     private final String disponibilidade;
 

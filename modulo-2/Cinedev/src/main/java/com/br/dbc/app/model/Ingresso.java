@@ -84,11 +84,18 @@ public class Ingresso {
     @Override
     public String toString() {
         return "Ingresso{" +
-                "id=" + idIngresso +
+                "idIngresso=" + idIngresso +
+                " Nome do Cliente = " + (cliente != null ? cliente.getPrimeiroNome() : null) +
+                " CPF = " + (cliente != null ? cliente.getCpf() : null) +
+                " EMAIL = " + (cliente != null ? cliente.getEmail() : null) +
+                " FILME = " + (filme != null ? filme.getNome() : null) +
+                " DURACAO = " + (filme != null ? filme.getDuracao() : null ) +
+                " CINEMA = " + (cinema != null ? cinema.getNome() : null) +
                 ", cadeira=" + cadeira +
                 ", preco=" + preco +
                 ", dataHora=" + dataHora +
                 ", disponibilidade=" + disponibilidade +
                 '}';
+
     }
 }

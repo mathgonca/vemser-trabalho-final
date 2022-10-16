@@ -6,6 +6,7 @@ import com.br.dbc.app.model.Ingresso;
 import com.br.dbc.app.repository.FilmeRepository;
 import com.br.dbc.app.repository.IngressoRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class IngressoService {
@@ -60,6 +61,16 @@ public class IngressoService {
             e.printStackTrace();
         }
 
+    }
+    public void listarIngressoClienteCinema(){
+        try{
+        List<Ingresso> list = ingressoRepository.listarIngressoComCliente();
+        list.forEach(System.out::println);
+        } catch(BancoDeDadosException e){
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

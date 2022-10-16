@@ -1,7 +1,10 @@
 package com.br.dbc.app.repository;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
+import com.br.dbc.app.model.Cinema;
+import com.br.dbc.app.model.Cliente;
 import com.br.dbc.app.model.Filme;
+import com.br.dbc.app.model.Ingresso;
 import com.br.dbc.app.model.enums.Idioma;
 
 import java.sql.*;
@@ -12,17 +15,6 @@ public class FilmeRepository implements Repository<Integer, Filme>{
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
 
-<<<<<<< HEAD
-=======
-//        String sql = "SELECT SEQ_ID_FILME.nextval mysequence from DUAL";
-//        Statement stat = connection.createStatement();
-//        ResultSet rest = stat.executeQuery(sql);
-//        if(rest.next()){
-//            rest.getInt("mysequence");
-//        }
-//        return null;
-
->>>>>>> 3fec78ad48e861b11225f6172d3d7e1dac450782
         String sql = "SELECT SEQ_ID_FILME.nextval mysequence from DUAL";
 
         Statement stmt = connection.createStatement();
@@ -73,6 +65,11 @@ public class FilmeRepository implements Repository<Integer, Filme>{
             }
         }
 
+    }
+
+    @Override
+    public Ingresso adicionar(Ingresso ingresso, Cliente cliente, Cinema cinema, Filme filme) throws BancoDeDadosException {
+        return null;
     }
 
     @Override
