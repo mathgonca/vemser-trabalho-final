@@ -13,6 +13,14 @@ public class Filme {
     private int classificacaoEtaria;
     private int duracao;
 
+    public Filme(){}
+    public Filme(Integer idFilme, String nome, Idioma idioma, int classificacaoEtaria, int duracao) {
+        this.idFilme = idFilme;
+        this.nome = nome;
+        this.idioma = idioma;
+        this.classificacaoEtaria = classificacaoEtaria;
+        this.duracao = duracao;
+    }
 
     public Integer getIdFilme() {
         return idFilme;

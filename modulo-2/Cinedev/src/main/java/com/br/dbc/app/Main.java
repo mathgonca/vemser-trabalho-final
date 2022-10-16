@@ -10,6 +10,7 @@ import com.br.dbc.app.repository.FilmeRepository;
 import com.br.dbc.app.repository.IngressoRepository;
 import com.br.dbc.app.service.FilmeService;
 import com.br.dbc.app.service.IngressoService;
+import com.br.dbc.app.view.cliente.ClienteView;
 
 public class Main {
     public static void main(String[] args) throws BancoDeDadosException {
@@ -31,7 +32,8 @@ public class Main {
         IngressoRepository ingresso2 = new IngressoRepository();
 //        ingresso.listarIngresso();
         System.out.println("=====================================");
-        ingresso.listarIngressoClienteCinema();
+
+
 
 
 
