@@ -79,3 +79,33 @@ INNER JOIN CINEMA CM ON I.ID_CINEMA = CM.ID_CINEMA;
 
 ALTER TABLE CINE_DEV.CLIENTE RENAME COLUMN IDADE TO DATA_NASCIMENTO;
 ALTER TABLE CINE_DEV.CLIENTE MODIFY DATA_NASCIMENTO DATE;
+
+SELECT * FROM FILME f;
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Halloween Ends', 'LEGENDADO', 18, 111);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Morte, Morte, Morte', 'DUBLADO', 16, 95);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'As Aventuras de Tadeo e a Tábua de Esmeralda', 'LEGENDADO', 0, 90);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Os Suburbanos - O Filme', 'DUBLADO', 14, 85);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Órfã 2: A Origem', 'LEGENDADO', 16, 98);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Minions 2: A Origem de Gru', 'DUBLADO', 0, 94);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'A Liga dos Superpets', 'LEGENDADO', 0, 106);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Ingresso Para o Paraíso', 'DUBLADO', 12, 102);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'A Mulher Rei', 'LEGENDADO', 14, 134);
+INSERT INTO FILME VALUES (SEQ_ID_FILME.nextval, 'Adão Negro', 'DUBLADO', 14, 125);
+
+SELECT * FROM CINEMA c;
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'GNC Iguatemi', 'RS', 'Porto Alegre');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'Cinemark Barra Sul', 'RS', 'Porto Alegre');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'Cinemark Wallig', 'RS', 'Porto Alegre');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'UCI ParkShopping Canoas', 'RS', 'Porto Alegre');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'Cinemark Canoas', 'RS', 'Porto Alegre');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'Centerplex Caruaru', 'PE', 'Caruaru');
+INSERT INTO CINEMA VALUES (SEQ_ID_CINEMA.nextval, 'Cinepolis Patteo Olinda', 'PE', 'Olinda');
+
+SELECT * FROM CLIENTE c;
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Vinicius', 'Assunção', '31816219002', TO_DATE('22/06/1999','dd-mm-yyyy'), 'vinicius-assuncao90@nine9.com.br');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Filipe', 'Nascimento', '82766295470', TO_DATE('05/06/1995','dd-mm-yyyy'), 'filipe.isaac.nascimento@djapan.com.br');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Isabella',  'Vieira', '81863960988', TO_DATE('09/07/1976','dd-mm-yyyy'), 'isabella_vieira@dc4.com.br');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Nina', 'Freitas', '98827209514', TO_DATE('16/03/1951','dd-mm-yyyy'), 'nina.fernanda.freitas@arosacampinas.com.br');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Fátima', 'Rosa', '40407480692', TO_DATE('06/10/1996','dd-mm-yyyy'), 'fatima-darosa74@skyzepp.com');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Nicolas', 'Silveira', '10601608119', TO_DATE('03/05/1992','dd-mm-yyyy'), 'nicolas-silveira87@vasconcelosdias.com');
+INSERT INTO	CLIENTE VALUES	(SEQ_ID_CLIENTE.nextval, 'Nair', 'Sales', '52700584058', TO_DATE('03/05/1992','dd-mm-yyyy'), 'nairmalusales@bravo.com.br');
