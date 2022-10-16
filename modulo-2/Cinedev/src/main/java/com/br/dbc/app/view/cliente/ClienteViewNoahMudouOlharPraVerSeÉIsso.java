@@ -8,6 +8,7 @@ import com.br.dbc.app.model.Cliente;
 import com.br.dbc.app.model.Filme;
 import com.br.dbc.app.model.Ingresso;
 import com.br.dbc.app.model.enums.Disponibilidade;
+import com.br.dbc.app.repository.IngressoDTORepository;
 import com.br.dbc.app.service.CinemaService;
 import com.br.dbc.app.service.ClienteService;
 import com.br.dbc.app.service.FilmeService;
@@ -30,7 +31,7 @@ public class ClienteViewNoahMudouOlharPraVerSeÉIsso {static ClienteService clie
         throw new IllegalStateException("Classe útil");
     }
 
-    public static void menuCliente() {
+    public static void menuCliente() throws BancoDeDadosException {
         final int CADASTRAR_CLIENTE = 1;
         final int LOGAR = 2;
         final int SAIR = 0;
@@ -77,8 +78,8 @@ public class ClienteViewNoahMudouOlharPraVerSeÉIsso {static ClienteService clie
                         switch (opcao3) {
                             case ESCOLHER_CINEMA:
                                 Ingresso ingresso = new Ingresso();
-                                Cinema cinemaEscolhido = new Cinema();
-                                Filme filmeEscolhido = new Filme();
+                                int idCinema = 0 ;
+                                int idFilme = 0 ;
 
                                 System.out.println(formatarTitulo("CINEMAS DISPONIVEIS"));
 
@@ -86,50 +87,24 @@ public class ClienteViewNoahMudouOlharPraVerSeÉIsso {static ClienteService clie
                                 cinemaService.listarCinema();
 
                                 System.out.print("Digite o ID do cinema escolhido: ");
-                                int teclado = scanner.nextInt();
+                                 idCinema = scanner.nextInt();
                                 scanner.nextLine();
 
-                                cinemaEscolhido.setIdCinema(teclado);
-                                ingresso.setCinema(cinemaEscolhido);
+                                ingresso.setIdCinema(idCinema);
 
                                 FilmeService filme = new FilmeService();
                                 filme.listarFilmes();
 
                                 System.out.println("Agora, escolha a Id do filme que deseja assistir:");
-                                int teclado1 = scanner.nextInt();
+                                idFilme= scanner.nextInt();
                                 scanner.nextLine();
+                                ingresso.setIdFilme(idFilme);
 
-                                filmeEscolhido.setIdFilme(teclado1);
-                                ingresso.setFilme(filmeEscolhido);
+                                IngressoDTORepository ingressoAcomprar = new IngressoDTORepository();
+                                ingressoAcomprar.listIngressos(idFilme, idCinema);
+                                System.out.println("Agora selecione a opção de compra!");
+                                System.out.println("Compra efetuada com sucesso!");
 
-                                System.out.println("Insira o numero de uma das poltronas livres apresentadas a seguir:");
-                                System.out.println("Poltrona - 10");
-                                System.out.println("Poltrona - 11");
-                                System.out.println("Poltrona - 12");
-
-                                int teclado4 = scanner.nextInt();
-                                scanner.nextLine();
-
-                                ingresso.setCadeira(teclado4);
-
-                                System.out.println("Escolha a data e o horario que deseja assistir:");
-                                System.out.println("1 - 20/10/2022 as 21:30");
-                                System.out.println("2 - 20/10/2022 as 21:30");
-                                System.out.println("3 - 20/10/2022 as 21:30");
-                                //ADICIONAR MANIPULAÇÃO DE DATAS E DAR ingresso.setDataHora();
-
-                                System.out.println("O Valor do ingresso é:");
-                                System.out.println("1 - 14,30 - Basta inserir essa opção para efetuar a compra!");
-                                System.out.println("2 - Digite essa opção caso possua algum desconto");
-                                int teclado2 = scanner.nextInt();
-                                scanner.nextLine();
-
-                                ingresso.setPreco(14.30);
-                                ingresso.setDataHora(Timestamp.valueOf("2022-09-22 21:30:00"));
-                                ingresso.setDisponibilidade(Disponibilidade.S);
-                                IngressoService ingressoService =  new IngressoService();
-                                ingressoService.adicionarIngresso(ingresso);
-                                ingressoService.listarIngresso();
 
 
                                 break;

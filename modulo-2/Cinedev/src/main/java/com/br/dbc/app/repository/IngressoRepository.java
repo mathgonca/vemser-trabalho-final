@@ -35,12 +35,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
     @Override
     public Ingresso adicionar(Ingresso ingresso, Cliente cliente, Cinema cinema, Filme filme) throws BancoDeDadosException {
         Connection conexao = null;
-//        Cliente cliente = new Cliente();
-//        Cinema cinema = new Cinema();
-//        Filme filme = new Filme();
-//        ClienteRepository clienteRepository = new ClienteRepository();
-//        CinemaRepository cinemaRepository = new CinemaRepository();
-//        FilmeRepository filmeRepository = new FilmeRepository();
+
         try{
             conexao = ConexaoDadosCineDev.getConnection();
 
@@ -57,7 +52,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             pst.setInt(4, cliente.getIdCliente());
             pst.setDouble(5, ingresso.getPreco());
             pst.setInt(6, ingresso.getCadeira());
-            pst.setTimestamp(7, ingresso.getDataHora());
+            pst.setTimestamp(7, Timestamp.valueOf(ingresso.getDataHora()));
             pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
 
             int ret = pst.executeUpdate();
@@ -119,7 +114,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setDouble(5, ingresso.getPreco());
             pst.setInt(6, ingresso.getCadeira());
-            pst.setTimestamp(7, ingresso.getDataHora());
+            pst.setTimestamp(7, Timestamp.valueOf(ingresso.getDataHora()));
             pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
             pst.setInt(5, id);
 
@@ -163,7 +158,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                 cinema.setIdCinema(res.getInt("ID_CINEMA"));
                 ingresso.setPreco(res.getDouble("VALOR"));
                 ingresso.setCadeira(res.getInt("CADEIRA"));
-                ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
+                ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
                 ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
                 listarIngresso.add(ingresso);
             }
@@ -235,7 +230,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
 
         ingresso.setPreco(res.getInt("VALOR"));
         ingresso.setCadeira(res.getInt("CADEIRA"));
-        ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
+        ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
         ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
 
         cliente.setPrimeiroNome(res.getString("NOME"));
