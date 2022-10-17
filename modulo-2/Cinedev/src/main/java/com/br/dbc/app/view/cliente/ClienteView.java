@@ -10,6 +10,7 @@ import com.br.dbc.app.repository.IngressoRepository;
 import com.br.dbc.app.service.CinemaService;
 import com.br.dbc.app.service.ClienteService;
 import com.br.dbc.app.service.FilmeService;
+import com.br.dbc.app.service.IngressoService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -139,8 +140,9 @@ public class ClienteView {
                                 break;
                             case LISTAR_INGRESSOS:
                                 System.out.println(formatarTitulo("LISTA DE INGRESSOS"));
-                                IngressoRepository listarIngressoComprado = new IngressoRepository();
-                                listarIngressoComprado.listarIngressoComprado();
+                                int id = clienteLogado.getIdCliente();
+                                IngressoService listarIngressoComprado = new IngressoService();
+                                listarIngressoComprado.listarIngressoComprado(id);
                                 break;
                             case SAIR:
                                 clienteLogado = null;

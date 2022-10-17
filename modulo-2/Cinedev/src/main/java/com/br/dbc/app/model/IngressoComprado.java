@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class IngressoComprado {
 
+    private  int idCliente;
     private int idIngressoComprado;
     private String nomeFilme;
     private String nomeCinema;
@@ -49,6 +50,14 @@ public class IngressoComprado {
 
     public void setDataHora(LocalDateTime dataHora) {
         DataHora = dataHora;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     @Override

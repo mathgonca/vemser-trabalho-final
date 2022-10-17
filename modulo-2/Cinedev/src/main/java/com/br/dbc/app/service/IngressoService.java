@@ -63,9 +63,9 @@ public class IngressoService {
         }
 
     }
-    public void listarIngressoComprado(){
+    public void listarIngressoComprado(Integer id){
         try{
-        List<IngressoComprado> list = ingressoRepository.listarIngressoComprado();
+        List<IngressoComprado> list = ingressoRepository.listarIngressoComprado(id);
         list.forEach(System.out::println);
         } catch(BancoDeDadosException e){
             e.printStackTrace();

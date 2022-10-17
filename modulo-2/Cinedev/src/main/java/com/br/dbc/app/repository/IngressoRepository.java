@@ -109,10 +109,10 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                     "DATA_HORA = ?, DISPONIBILIDADE = ? WHERE ID_INGRESSO = ?";
 
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setDouble(5, ingresso.getPreco());
-            pst.setInt(6, ingresso.getCadeira());
-            pst.setTimestamp(7, Timestamp.valueOf(ingresso.getDataHora()));
-            pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setDouble(1, ingresso.getPreco());
+            pst.setInt(2, ingresso.getCadeira());
+            pst.setTimestamp(3, Timestamp.valueOf(ingresso.getDataHora()));
+            pst.setString(4, ingresso.getDisponibilidade().isDisponibilidade());
             pst.setInt(5, id);
 
             int ret = pst.executeUpdate();
@@ -174,7 +174,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         }
     }
 
-    public List<IngressoComprado> listarIngressoComprado() throws SQLException{
+    public List<IngressoComprado> listarIngressoComprado(Integer id) throws SQLException{
             List<IngressoComprado> ingressosComprados = new ArrayList<>();
             Connection conexao = null;
 
@@ -183,11 +183,13 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                 conexao = ConexaoDadosCineDev.getConnection();
 
                 String sql =
-                        "SELECT F.NOME AS FILME, C.NOME AS CINEMA,ID_INGRESSO,I.DATA_HORA FROM INGRESSO I " +
-                                "INNER JOIN FILME F ON F.ID_FILME = I.ID_FILME  " +
-                                "INNER JOIN CINEMA C ON C.ID_CINEMA = I.ID_CINEMA ORDER BY I.DATA_HORA";
+                        "SELECT F.NOME AS FILME, C.NOME AS CINEMA,ID_INGRESSO,I.DATA_HORA FROM INGRESSO I\n" +
+                                "INNER JOIN CLIENTE CT ON I.ID_CLIENTE = I.ID_CLIENTE \n" +
+                                "INNER JOIN FILME F ON F.ID_FILME = I.ID_FILME  \n" +
+                                "INNER JOIN CINEMA C ON C.ID_CINEMA = I.ID_CINEMA WHERE CT.ID_CLIENTE = ? ORDER BY I.DATA_HORA";
 
                 PreparedStatement stmt = conexao.prepareStatement(sql);
+                stmt.setInt(1, id);
 
                 ResultSet res = stmt.executeQuery(sql);
                 while(res.next()){
@@ -215,7 +217,10 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
     public IngressoComprado getIngressoResultSet(ResultSet res) throws SQLException {
 
         IngressoComprado ingresso = new IngressoComprado();
+        Cliente cliente = new Cliente();
 
+        cliente.setIdCliente(res.getInt("ID_CLIENTE"));
+//        ingresso.setIdCliente(res.getInt("ID_CLIENTE"));
         ingresso.setIdIngressoComprado(res.getInt("ID_INGRESSO"));
         ingresso.setNomeFilme(res.getString("FILME"));
         ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
