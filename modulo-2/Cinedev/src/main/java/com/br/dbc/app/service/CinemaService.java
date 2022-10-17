@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class CinemaService {
+    private CinemaRepository cinemaRepository;
 
+    CinemaService() {
+        cinemaRepository = new CinemaRepository();
+    }
 
-    private static CinemaRepository cinemaRepository;
-    private int id;
-
-
-    public  void listarCinema() {
+    public void listarCinema() {
         try {
             List<Cinema> list = cinemaRepository.listar();
             list.forEach(System.out::println);
@@ -27,15 +27,16 @@ public class CinemaService {
 
     public void adicionarCinema(Cinema cinema) throws BancoDeDadosException, CinemaJaCadastradoException {
 
-        int cinemaCadastroId = cinema.getIdCinema();
-
-        Optional<Cinema> listarCinemaId = cinemaRepository.listarCinemaId(cinemaCadastroId);
-
-        if (listarCinemaId.isEmpty()) {
-            cinemaRepository.adicionar(cinema);
-        } else {
-            throw new CinemaJaCadastradoException("Já existe um cliente cadastrado com esse CPF!");
-        }
+//        int cinemaCadastroId = cinema.getIdCinema();
+//
+//        Optional<Cinema> listarCinemaId = cinemaRepository.listarCinemaId(cinemaCadastroId);
+//
+//        if (listarCinemaId.isEmpty()) {
+//            cinemaRepository.adicionar(cinema);
+//        } else {
+//            throw new CinemaJaCadastradoException("Já existe um cliente cadastrado com esse CPF!");
+//        }
+        cinemaRepository.adicionar(cinema);
     }
 
     public void removerCinema(Integer id) {
@@ -48,7 +49,7 @@ public class CinemaService {
 
     }
 
-    public static Cinema logarCinema(int id) throws CpfInvalidoException, BancoDeDadosException, CinemaNaoEncontradoException {
+    public Cinema logarCinema(int id) throws CpfInvalidoException, BancoDeDadosException, CinemaNaoEncontradoException {
 
         Optional<Cinema> listarCinemaId = cinemaRepository.listarCinemaId(id);
         if (listarCinemaId.isEmpty()) {

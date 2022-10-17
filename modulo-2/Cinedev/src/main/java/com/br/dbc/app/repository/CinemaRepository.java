@@ -14,14 +14,15 @@ import java.util.Optional;
 public class CinemaRepository implements Repository<Integer, Cinema> {
 
     public Integer getProximoId(Connection connection) throws SQLException {
+        String sql = "SELECT SEQ_ID_CINEMA.nextval mysequence from DUAL";
 
-        String sql = "SELECT SEQ_ID_CINEMA.NEXTVAL SEQUENCIA FROM CINEMA";
-        Statement stat = connection.createStatement();
-        ResultSet rest = stat.executeQuery(sql);
-        if (rest.next()) {
-            rest.getInt("sequencia");
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery(sql);
 
+        if (res.next()) {
+            return res.getInt("mysequence");
         }
+
         return null;
     }
 
@@ -30,18 +31,15 @@ public class CinemaRepository implements Repository<Integer, Cinema> {
         Connection conexao = null;
         try {
             conexao = ConexaoDadosCineDev.getConnection();
+
             Integer chaveID = this.getProximoId(conexao);
-
-
             cinema.setIdCinema(chaveID);
 
-
             String sql = "INSERT INTO CINEMA (ID_CINEMA, NOME, ESTADO, CIDADE)\n" +
-                    "values (?, ?, ?, ?):";
+                    "values (?, ?, ?, ?)";
             PreparedStatement pst = conexao.prepareStatement(sql);
 
             pst.setInt(1, cinema.getIdCinema());
-
             pst.setString(2, cinema.getNome());
             pst.setString(3, cinema.getEstado());
             pst.setString(4, cinema.getCidade());

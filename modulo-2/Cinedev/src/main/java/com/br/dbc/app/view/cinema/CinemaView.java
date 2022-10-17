@@ -4,16 +4,18 @@ import com.br.dbc.app.exceptions.BancoDeDadosException;
 import com.br.dbc.app.exceptions.CinemaNaoEncontradoException;
 import com.br.dbc.app.exceptions.CpfInvalidoException;
 import com.br.dbc.app.model.Cinema;
+import com.br.dbc.app.service.CinemaService;
 import com.br.dbc.app.service.FilmeService;
 
 import java.util.Scanner;
 
-import static com.br.dbc.app.service.CinemaService.logarCinema;
 import static com.br.dbc.app.view.cinema.CinemaCadastroview.menuCinemaCadastro;
 import static com.br.dbc.app.view.filme.FilmeView.menuFilme;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class CinemaView {
+
+    private static CinemaService service;
 
     private CinemaView() {
         throw new IllegalStateException("Classe útil");
@@ -46,7 +48,7 @@ public class CinemaView {
                     System.out.println("\nInforme o ID do Cinema");
                     try {
                         int id = scanner.nextInt();
-                        cinemaLogado = logarCinema(id);
+                        cinemaLogado = service.logarCinema(id);
                     } catch (BancoDeDadosException | CinemaNaoEncontradoException e) {
                         throw new RuntimeException(e);
                     }

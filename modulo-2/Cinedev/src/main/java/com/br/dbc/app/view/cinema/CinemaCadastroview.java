@@ -11,29 +11,28 @@ import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class CinemaCadastroview {
 
+    static CinemaService cinemaService;
+
     private CinemaCadastroview() {
         throw new IllegalStateException("Classe útil");
     }
 
     public static void menuCinemaCadastro() {
+        Scanner scanner = new Scanner(System.in);
 
-        CinemaService cinemaService = new CinemaService();
+        System.out.println(formatarTitulo("CINEMA"));
+        System.out.println("Cadastrar um Cinema");
 
-            Scanner scanner = new Scanner(System.in);
+        System.out.println("Digite o nome do Cinema: ");
+        String Nome = scanner.nextLine();
 
-            System.out.println(formatarTitulo("CINEMA"));
-            System.out.println("Cadastrar um Cinema");
+        System.out.println("Digite em Qual Estado o cinema se encontra: ");
+        String Estado = scanner.nextLine();
 
-                    System.out.println("Digite o nome do Cinema: ");
-                    String Nome = scanner.nextLine();
+        System.out.println("Digite a Cidade em que o cinema se encontra: ");
+        String Cidade = scanner.nextLine();
 
-                    System.out.println("Digite em Qual Estado o cinema se encontra: ");
-                    String Estado = scanner.nextLine();
-
-                    System.out.println("Digite a Cidade em que o cinema se encontra: ");
-                   String Cidade = scanner.nextLine();
-
-        Cinema cinema = new Cinema(1,Nome, Estado, Cidade);
+        Cinema cinema = new Cinema(1, Nome, Estado, Cidade);
 
         try {
             cinemaService.adicionarCinema(cinema);
@@ -43,7 +42,5 @@ public class CinemaCadastroview {
             throw new RuntimeException(e);
         }
         cinemaService.listarCinema();
-
-
-        }
     }
+}
