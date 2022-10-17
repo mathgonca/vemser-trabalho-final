@@ -9,7 +9,9 @@ import com.br.dbc.app.service.FilmeService;
 
 import java.util.Scanner;
 
+import static com.br.dbc.app.view.cinema.CinemaCadastroview.cinemaService;
 import static com.br.dbc.app.view.cinema.CinemaCadastroview.menuCinemaCadastro;
+import static com.br.dbc.app.view.filme.FilmeCadastroView.menuFilmeCadastro;
 import static com.br.dbc.app.view.filme.FilmeView.menuFilme;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
@@ -48,7 +50,8 @@ public class CinemaView {
                     System.out.println("\nInforme o ID do Cinema");
                     try {
                         int id = scanner.nextInt();
-                        cinemaLogado = service.logarCinema(id);
+                        scanner.nextLine();
+                        cinemaLogado = cinemaService.logarCinema(id);
                     } catch (BancoDeDadosException | CinemaNaoEncontradoException e) {
                         throw new RuntimeException(e);
                     }
@@ -57,14 +60,19 @@ public class CinemaView {
 
                         final int CADASTRAR_FILME = 1;
                         final int REMOVER_FILME = 2;
+
+
+                        int opcao3 = -1;
+                        while (opcao3 != 0) {
                         System.out.println(formatarTitulo("CINEMA LOGADO"));
                         System.out.println("1- cadastrar um filme");
                         System.out.println("2- remover um filme");
+                        System.out.println("0 - SAIR");
 
-                        int opção3 = Integer.parseInt(scanner.nextLine());
-                        switch (opção3) {
+                        opcao3 = Integer.parseInt(scanner.nextLine());
+                        switch (opcao3) {
                             case CADASTRAR_FILME:
-                                menuFilme();
+                                menuFilmeCadastro();
                                 break;
                             case REMOVER_FILME:
                                 System.out.println(formatarTitulo("Remover um filme"));
@@ -81,10 +89,14 @@ public class CinemaView {
 
                                 break;
 
-                            default:
-                                System.err.println("Opção inválida!");
+                            case SAIR:
+                                cinemaLogado = null;
                                 break;
 
+                                default:
+                                System.err.println("Opção inválida!");
+                                break;
+                        }
                         }
                     }
             }

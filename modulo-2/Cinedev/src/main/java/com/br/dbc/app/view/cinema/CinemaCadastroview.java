@@ -11,7 +11,7 @@ import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class CinemaCadastroview {
 
-    static CinemaService cinemaService;
+    static CinemaService cinemaService = new CinemaService();
 
     private CinemaCadastroview() {
         throw new IllegalStateException("Classe útil");

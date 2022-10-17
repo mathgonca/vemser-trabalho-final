@@ -21,7 +21,8 @@ import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 public class ClienteView {
 
     static ClienteService clienteService = new ClienteService();
-    static CinemaService cinemaService;
+    static CinemaService cinemaService = new CinemaService();
+
     static FilmeService filmeService = new FilmeService();
 
     private ClienteView() {

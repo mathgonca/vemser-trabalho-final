@@ -22,8 +22,8 @@ public class FilmeCadastroView {
         System.out.print("Digte o Titulo do Filme: ");
         String nomeFilme = scanner.nextLine();
 
-        System.out.print("Insira opção de idioma: Legendado ou Dublado? ");
-        Idioma idioma = Idioma.valueOf(scanner.nextLine());
+        System.out.print("Insira opção de idioma: 1 - Legendado ou 2 - Dublado? ");
+        Idioma idioma = Idioma.valueOf(scanner.nextLine().toUpperCase());
 
         System.out.print("Insira a Classificação Etaria do Filme: ");
         int classificacao = scanner.nextInt();

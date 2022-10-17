@@ -10,7 +10,7 @@ import java.util.Optional;
 public class CinemaService {
     private CinemaRepository cinemaRepository;
 
-    CinemaService() {
+    public CinemaService() {
         cinemaRepository = new CinemaRepository();
     }
 

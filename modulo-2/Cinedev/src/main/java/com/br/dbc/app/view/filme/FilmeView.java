@@ -4,6 +4,7 @@ import com.br.dbc.app.service.FilmeService;
 
 import java.util.Scanner;
 
+import static com.br.dbc.app.view.filme.FilmeCadastroView.menuFilmeCadastro;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class FilmeView {
@@ -30,7 +31,7 @@ public class FilmeView {
             switch (opcao) {
                 case ADICIONAR:
                     System.out.println(formatarTitulo("Adicionar um novo filme"));
-                    menuFilme();
+                    menuFilmeCadastro();
                     break;
                 case REMOVER:
                     System.out.println(formatarTitulo("Remover um filme"));
