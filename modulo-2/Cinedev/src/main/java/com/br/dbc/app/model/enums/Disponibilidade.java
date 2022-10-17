@@ -12,4 +12,8 @@ public enum Disponibilidade {
     public String isDisponibilidade() {
         return disponibilidade;
     }
+
+    public String getDisponibilidade() {
+        return disponibilidade;
+    }
 }

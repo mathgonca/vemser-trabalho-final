@@ -32,6 +32,7 @@ public class IngressoDTORepository implements Repository<Integer, IngressoDTO> {
                 ingressoDTO.setValor(res.getDouble("VALOR"));
                 ingressos.add(ingressoDTO);
             }
+            return ingressos;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -44,7 +45,6 @@ public class IngressoDTORepository implements Repository<Integer, IngressoDTO> {
             }
         }
 
-        return ingressos;
     }
 
     @Override

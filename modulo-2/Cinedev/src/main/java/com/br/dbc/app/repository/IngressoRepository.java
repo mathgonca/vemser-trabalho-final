@@ -108,9 +108,9 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             String sql = "UPDATE INGRESSO SET ID_CLIENTE = ?, VALOR = ?, DISPONIBLIDADE = ? WHERE ID_INGRESSO = ?";
 
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setInt(1, ingresso.getIdCliente());
-            pst.setDouble(2, ingresso.getPreco());
-            pst.setString(3, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setInt(1, id);
+            pst.setDouble(2, 30);
+            pst.setString(3, "N");
             pst.setInt(4, ingresso.getIdIngresso());
 
             int ret = pst.executeUpdate();
