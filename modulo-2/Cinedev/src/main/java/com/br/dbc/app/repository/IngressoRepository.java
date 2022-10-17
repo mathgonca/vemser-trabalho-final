@@ -1,16 +1,14 @@
 package com.br.dbc.app.repository;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
-import com.br.dbc.app.model.Cinema;
-import com.br.dbc.app.model.Cliente;
-import com.br.dbc.app.model.Filme;
-import com.br.dbc.app.model.Ingresso;
+import com.br.dbc.app.model.*;
 import com.br.dbc.app.model.enums.Disponibilidade;
 import com.br.dbc.app.model.enums.Idioma;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class IngressoRepository implements Repository<Integer, Ingresso> {
 
@@ -35,12 +33,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
     @Override
     public Ingresso adicionar(Ingresso ingresso, Cliente cliente, Cinema cinema, Filme filme) throws BancoDeDadosException {
         Connection conexao = null;
-//        Cliente cliente = new Cliente();
-//        Cinema cinema = new Cinema();
-//        Filme filme = new Filme();
-//        ClienteRepository clienteRepository = new ClienteRepository();
-//        CinemaRepository cinemaRepository = new CinemaRepository();
-//        FilmeRepository filmeRepository = new FilmeRepository();
+
         try{
             conexao = ConexaoDadosCineDev.getConnection();
 
@@ -57,7 +50,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
             pst.setInt(4, cliente.getIdCliente());
             pst.setDouble(5, ingresso.getPreco());
             pst.setInt(6, ingresso.getCadeira());
-            pst.setTimestamp(7, ingresso.getDataHora());
+            pst.setTimestamp(7, Timestamp.valueOf(ingresso.getDataHora()));
             pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
 
             int ret = pst.executeUpdate();
@@ -112,24 +105,20 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         try{
             conexao = ConexaoDadosCineDev.getConnection();
 
-
-            String sql = "UPDATE INGRESSO SET VALOR = ?, CADEIRA = ?," +
-                    "DATA_HORA = ?, DISPONIBILIDADE = ? WHERE ID_INGRESSO = ?";
+            String sql = "UPDATE INGRESSO SET ID_CLIENTE = ?, VALOR = ?, DISPONIBLIDADE = ? WHERE ID_INGRESSO = ?";
 
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setDouble(5, ingresso.getPreco());
-            pst.setInt(6, ingresso.getCadeira());
-            pst.setTimestamp(7, ingresso.getDataHora());
-            pst.setString(8, ingresso.getDisponibilidade().isDisponibilidade());
-            pst.setInt(5, id);
+            pst.setInt(1, ingresso.getIdCliente());
+            pst.setDouble(2, ingresso.getPreco());
+            pst.setString(3, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setInt(4, ingresso.getIdIngresso());
 
             int ret = pst.executeUpdate();
-            if(ret==0){
+            if (ret == 0) {
                 System.out.println("Não foi possível realizar a alteração do seu Ingresso!");
             }
             System.out.println("O Ingresso foi alterado com sucesso!");
-            return ret>0;
-
+            return ret > 0;
         }catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -163,7 +152,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                 cinema.setIdCinema(res.getInt("ID_CINEMA"));
                 ingresso.setPreco(res.getDouble("VALOR"));
                 ingresso.setCadeira(res.getInt("CADEIRA"));
-                ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
+                ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
                 ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
                 listarIngresso.add(ingresso);
             }
@@ -182,30 +171,31 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         }
     }
 
-    public List<Ingresso> listarIngressoComCliente() throws SQLException{
-            List<Ingresso> ingressosEclientes = new ArrayList<>();
+    public List<IngressoComprado> listarIngressoComprado(Integer id) throws SQLException{
+            List<IngressoComprado> ingressosComprados = new ArrayList<>();
             Connection conexao = null;
+
 
             try{
                 conexao = ConexaoDadosCineDev.getConnection();
 
-                String sql = "SELECT I.ID_INGRESSO, C.ID_CLIENTE, C.PRIMEIRO_NOME AS NOME, C.CPF, C.EMAIL, F.ID_FILME, F.NOME AS FILME, F.DURACAO, " +
-                        "CM.ID_CINEMA, CM.NOME AS CINEMA, I.VALOR, I.CADEIRA, I.DATA_HORA, I.DISPONIBLIDADE \n" +
-                        "FROM CLIENTE C\n" +
-                        "INNER JOIN INGRESSO I ON (C.ID_CLIENTE = I.ID_CLIENTE) \n" +
-                        "INNER JOIN FILME F ON (I.ID_FILME = F.ID_FILME) \n" +
-                        "INNER JOIN CINEMA CM ON (I.ID_CINEMA = CM.ID_CINEMA)";
+                String sql =
+                        "SELECT F.NOME AS FILME, C.NOME AS CINEMA,ID_INGRESSO,I.DATA_HORA FROM INGRESSO I\n" +
+                                "INNER JOIN CLIENTE CT ON I.ID_CLIENTE = I.ID_CLIENTE \n" +
+                                "INNER JOIN FILME F ON F.ID_FILME = I.ID_FILME  \n" +
+                                "INNER JOIN CINEMA C ON C.ID_CINEMA = I.ID_CINEMA WHERE CT.ID_CLIENTE = ? ORDER BY I.DATA_HORA";
 
                 PreparedStatement stmt = conexao.prepareStatement(sql);
+                stmt.setInt(1, id);
 
-                ResultSet res = stmt.executeQuery(sql);
+                ResultSet res = stmt.executeQuery();
                 while(res.next()){
-                    Ingresso ingresso = getIngressoResultSet(res);
-                    ingressosEclientes.add(ingresso);
+                    IngressoComprado ingresso = getIngressoResultSet(res);
+                    ingressosComprados.add(ingresso);
 
                 }
 
-                return ingressosEclientes;
+                return ingressosComprados;
 
             }catch (SQLException e) {
                 throw new BancoDeDadosException(e.getCause());
@@ -221,32 +211,58 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
 
     }
 
-    public Ingresso getIngressoResultSet(ResultSet res) throws SQLException {
+    public IngressoComprado getIngressoResultSet(ResultSet res) throws SQLException {
 
-        Ingresso ingresso = new Ingresso();
-        Cliente cliente = new Cliente();
-        Filme filme = new Filme();
-        Cinema cinema = new Cinema();
+        IngressoComprado ingresso = new IngressoComprado();
 
-        ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
-        cliente.setIdCliente(res.getInt("ID_CLIENTE"));
-        filme.setIdFilme(res.getInt("ID_FILME"));
-        cinema.setIdCinema(res.getInt("ID_CINEMA"));
-
-        ingresso.setPreco(res.getInt("VALOR"));
-        ingresso.setCadeira(res.getInt("CADEIRA"));
-        ingresso.setDataHora(res.getTimestamp("DATA_HORA"));
-        ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
-
-        cliente.setPrimeiroNome(res.getString("NOME"));
-        cliente.setCpf(res.getString("CPF"));
-        cliente.setEmail(res.getString("EMAIL"));
-
-        filme.setNome(res.getString("FILME"));
-        filme.setDuracao(res.getInt("DURACAO"));
-
-        cinema.setNome(res.getString("CINEMA"));
+        ingresso.setIdIngressoComprado(res.getInt("ID_INGRESSO"));
+        ingresso.setNomeFilme(res.getString("FILME"));
+        ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
+        ingresso.setNomeCinema(res.getString("CINEMA"));
 
         return ingresso;
+    }
+
+    public Optional<Ingresso> listarIngressoPeloId(int idIngresso) throws BancoDeDadosException {
+        Optional<Ingresso> ingressoOptional = Optional.empty();
+
+        Connection con = null;
+        try {
+            con = ConexaoDadosCineDev.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM INGRESSO i");
+            sql.append(" WHERE i.ID_INGRESSO = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setInt(1, idIngresso);
+
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                Ingresso ingresso = new Ingresso();
+                ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
+                ingresso.setIdFilme(res.getInt("ID_FILME"));
+                ingresso.setIdCliente(res.getInt("ID_CLIENTE"));
+                ingresso.setPreco(res.getDouble("VALOR"));
+                ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
+                ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
+
+                ingressoOptional = Optional.of(ingresso);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ingressoOptional;
     }
 }

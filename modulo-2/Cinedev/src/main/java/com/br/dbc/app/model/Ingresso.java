@@ -3,6 +3,7 @@ package com.br.dbc.app.model;
 import com.br.dbc.app.model.enums.Disponibilidade;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Ingresso {
@@ -10,11 +11,11 @@ public class Ingresso {
     private Integer idIngresso;
     private int cadeira;
     private double preco;
-    private Timestamp dataHora;
+    private LocalDateTime dataHora;
     private Disponibilidade disponibilidade;
-    private Filme filme;
-    private Cinema cinema;
-    private Cliente cliente;
+    private int idFilme;
+    private int idCinema;
+    private int idCliente;
 
 
     public int getIdIngresso() {
@@ -41,11 +42,11 @@ public class Ingresso {
         this.preco = preco;
     }
 
-    public Timestamp getDataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(Timestamp dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -57,40 +58,35 @@ public class Ingresso {
         this.disponibilidade = disponibilidade;
     }
 
-    public Filme getFilme() {
-        return filme;
+    public int getIdFilme() {
+        return idFilme;
     }
 
-    public void setFilme(Filme filme) {
-        this.filme = filme;
+    public void setIdFilme(int idFilme) {
+        this.idFilme = idFilme;
+
     }
 
-    public Cinema getCinema() {
-        return cinema;
+    public int getIdCinema() {
+        return idCinema;
     }
 
-    public void setCinema(Cinema cinema) {
-        this.cinema = cinema;
+    public void setIdCinema(int idCinema) {
+        this.idCinema = idCinema;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     @Override
     public String toString() {
         return "Ingresso{" +
                 "idIngresso=" + idIngresso +
-                " Nome do Cliente = " + (cliente != null ? cliente.getPrimeiroNome() : null) +
-                " CPF = " + (cliente != null ? cliente.getCpf() : null) +
-                " EMAIL = " + (cliente != null ? cliente.getEmail() : null) +
-                " FILME = " + (filme != null ? filme.getNome() : null) +
-                " DURACAO = " + (filme != null ? filme.getDuracao() : null ) +
-                " CINEMA = " + (cinema != null ? cinema.getNome() : null) +
                 ", cadeira=" + cadeira +
                 ", preco=" + preco +
                 ", dataHora=" + dataHora +
