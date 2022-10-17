@@ -79,7 +79,7 @@ public class Ingresso {
         return idCliente;
     }
 
-    public void setIdCliente(Cliente cliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 

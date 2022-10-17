@@ -8,6 +8,7 @@ import com.br.dbc.app.model.enums.Idioma;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class IngressoRepository implements Repository<Integer, Ingresso> {
 
@@ -104,24 +105,20 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         try{
             conexao = ConexaoDadosCineDev.getConnection();
 
-
-            String sql = "UPDATE INGRESSO SET VALOR = ?, CADEIRA = ?," +
-                    "DATA_HORA = ?, DISPONIBILIDADE = ? WHERE ID_INGRESSO = ?";
+            String sql = "UPDATE INGRESSO SET ID_CLIENTE = ?, VALOR = ?, DISPONIBLIDADE = ? WHERE ID_INGRESSO = ?";
 
             PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setDouble(1, ingresso.getPreco());
-            pst.setInt(2, ingresso.getCadeira());
-            pst.setTimestamp(3, Timestamp.valueOf(ingresso.getDataHora()));
-            pst.setString(4, ingresso.getDisponibilidade().isDisponibilidade());
-            pst.setInt(5, id);
+            pst.setInt(1, ingresso.getIdCliente());
+            pst.setDouble(2, ingresso.getPreco());
+            pst.setString(3, ingresso.getDisponibilidade().isDisponibilidade());
+            pst.setInt(4, ingresso.getIdIngresso());
 
             int ret = pst.executeUpdate();
-            if(ret==0){
+            if (ret == 0) {
                 System.out.println("Não foi possível realizar a alteração do seu Ingresso!");
             }
             System.out.println("O Ingresso foi alterado com sucesso!");
-            return ret>0;
-
+            return ret > 0;
         }catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -224,5 +221,48 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         ingresso.setNomeCinema(res.getString("CINEMA"));
 
         return ingresso;
+    }
+
+    public Optional<Ingresso> listarIngressoPeloId(int idIngresso) throws BancoDeDadosException {
+        Optional<Ingresso> ingressoOptional = Optional.empty();
+
+        Connection con = null;
+        try {
+            con = ConexaoDadosCineDev.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM INGRESSO i");
+            sql.append(" WHERE i.ID_INGRESSO = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setInt(1, idIngresso);
+
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                Ingresso ingresso = new Ingresso();
+                ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
+                ingresso.setIdFilme(res.getInt("ID_FILME"));
+                ingresso.setIdCliente(res.getInt("ID_CLIENTE"));
+                ingresso.setPreco(res.getDouble("VALOR"));
+                ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
+                ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
+
+                ingressoOptional = Optional.of(ingresso);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ingressoOptional;
     }
 }
