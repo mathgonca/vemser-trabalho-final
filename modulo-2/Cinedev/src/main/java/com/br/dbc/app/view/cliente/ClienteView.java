@@ -21,7 +21,7 @@ import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 public class ClienteView {
 
     static ClienteService clienteService = new ClienteService();
-    static CinemaService cinemaService = new CinemaService();
+    static CinemaService cinemaService;
     static FilmeService filmeService = new FilmeService();
 
     private ClienteView() {
@@ -79,7 +79,6 @@ public class ClienteView {
 
                                 System.out.println(formatarTitulo("CINEMAS DISPONIVEIS"));
 
-                                CinemaService cinemaService = new CinemaService();
                                 cinemaService.listarCinema();
 
                                 System.out.println("");
