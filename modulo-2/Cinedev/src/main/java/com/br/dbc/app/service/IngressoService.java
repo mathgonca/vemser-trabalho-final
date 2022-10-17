@@ -3,6 +3,7 @@ package com.br.dbc.app.service;
 import com.br.dbc.app.exceptions.BancoDeDadosException;
 import com.br.dbc.app.model.Filme;
 import com.br.dbc.app.model.Ingresso;
+import com.br.dbc.app.model.IngressoComprado;
 import com.br.dbc.app.repository.FilmeRepository;
 import com.br.dbc.app.repository.IngressoRepository;
 
@@ -62,9 +63,9 @@ public class IngressoService {
         }
 
     }
-    public void listarIngressoClienteCinema(){
+    public void listarIngressoComprado(){
         try{
-        List<Ingresso> list = ingressoRepository.listarIngressoComCliente();
+        List<IngressoComprado> list = ingressoRepository.listarIngressoComprado();
         list.forEach(System.out::println);
         } catch(BancoDeDadosException e){
             e.printStackTrace();

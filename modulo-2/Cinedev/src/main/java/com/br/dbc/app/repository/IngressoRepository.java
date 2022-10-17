@@ -1,10 +1,7 @@
 package com.br.dbc.app.repository;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
-import com.br.dbc.app.model.Cinema;
-import com.br.dbc.app.model.Cliente;
-import com.br.dbc.app.model.Filme;
-import com.br.dbc.app.model.Ingresso;
+import com.br.dbc.app.model.*;
 import com.br.dbc.app.model.enums.Disponibilidade;
 import com.br.dbc.app.model.enums.Idioma;
 
@@ -177,30 +174,29 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
         }
     }
 
-    public List<Ingresso> listarIngressoComCliente() throws SQLException{
-            List<Ingresso> ingressosEclientes = new ArrayList<>();
+    public List<IngressoComprado> listarIngressoComprado() throws SQLException{
+            List<IngressoComprado> ingressosComprados = new ArrayList<>();
             Connection conexao = null;
+
 
             try{
                 conexao = ConexaoDadosCineDev.getConnection();
 
-                String sql = "SELECT I.ID_INGRESSO, C.ID_CLIENTE, C.PRIMEIRO_NOME AS NOME, C.CPF, C.EMAIL, F.ID_FILME, F.NOME AS FILME, F.DURACAO, " +
-                        "CM.ID_CINEMA, CM.NOME AS CINEMA, I.VALOR, I.CADEIRA, I.DATA_HORA, I.DISPONIBLIDADE \n" +
-                        "FROM CLIENTE C\n" +
-                        "INNER JOIN INGRESSO I ON (C.ID_CLIENTE = I.ID_CLIENTE) \n" +
-                        "INNER JOIN FILME F ON (I.ID_FILME = F.ID_FILME) \n" +
-                        "INNER JOIN CINEMA CM ON (I.ID_CINEMA = CM.ID_CINEMA)";
+                String sql =
+                        "SELECT F.NOME AS FILME, C.NOME AS CINEMA,ID_INGRESSO,I.DATA_HORA FROM INGRESSO I " +
+                                "INNER JOIN FILME F ON F.ID_FILME = I.ID_FILME  " +
+                                "INNER JOIN CINEMA C ON C.ID_CINEMA = I.ID_CINEMA ORDER BY I.DATA_HORA";
 
                 PreparedStatement stmt = conexao.prepareStatement(sql);
 
                 ResultSet res = stmt.executeQuery(sql);
                 while(res.next()){
-                    Ingresso ingresso = getIngressoResultSet(res);
-                    ingressosEclientes.add(ingresso);
+                    IngressoComprado ingresso = getIngressoResultSet(res);
+                    ingressosComprados.add(ingresso);
 
                 }
 
-                return ingressosEclientes;
+                return ingressosComprados;
 
             }catch (SQLException e) {
                 throw new BancoDeDadosException(e.getCause());
@@ -216,31 +212,14 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
 
     }
 
-    public Ingresso getIngressoResultSet(ResultSet res) throws SQLException {
+    public IngressoComprado getIngressoResultSet(ResultSet res) throws SQLException {
 
-        Ingresso ingresso = new Ingresso();
-        Cliente cliente = new Cliente();
-        Filme filme = new Filme();
-        Cinema cinema = new Cinema();
+        IngressoComprado ingresso = new IngressoComprado();
 
-        ingresso.setIdIngresso(res.getInt("ID_INGRESSO"));
-        cliente.setIdCliente(res.getInt("ID_CLIENTE"));
-        filme.setIdFilme(res.getInt("ID_FILME"));
-        cinema.setIdCinema(res.getInt("ID_CINEMA"));
-
-        ingresso.setPreco(res.getInt("VALOR"));
-        ingresso.setCadeira(res.getInt("CADEIRA"));
+        ingresso.setIdIngressoComprado(res.getInt("ID_INGRESSO"));
+        ingresso.setNomeFilme(res.getString("FILME"));
         ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());
-        ingresso.setDisponibilidade(Disponibilidade.valueOf(res.getString("DISPONIBLIDADE")));
-
-        cliente.setPrimeiroNome(res.getString("NOME"));
-        cliente.setCpf(res.getString("CPF"));
-        cliente.setEmail(res.getString("EMAIL"));
-
-        filme.setNome(res.getString("FILME"));
-        filme.setDuracao(res.getInt("DURACAO"));
-
-        cinema.setNome(res.getString("CINEMA"));
+        ingresso.setNomeCinema(res.getString("CINEMA"));
 
         return ingresso;
     }

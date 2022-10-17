@@ -1,5 +1,8 @@
 package com.br.dbc.app.view;
 
+import com.br.dbc.app.exceptions.BancoDeDadosException;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import static com.br.dbc.app.view.cinema.CinemaView.menuCinema;
@@ -7,7 +10,7 @@ import static com.br.dbc.app.view.cliente.ClienteView.menuCliente;
 import static com.br.dbc.app.view.util.FormatarTitulo.formatarTitulo;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         final int CLIENTE = 1;
         final int CINEMA = 2;
         final int SAIR = 0;

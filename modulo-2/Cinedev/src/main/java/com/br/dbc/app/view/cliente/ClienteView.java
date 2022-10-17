@@ -4,10 +4,14 @@ import com.br.dbc.app.exceptions.BancoDeDadosException;
 import com.br.dbc.app.exceptions.ClienteNaoEncontradoException;
 import com.br.dbc.app.exceptions.CpfInvalidoException;
 import com.br.dbc.app.model.Cliente;
+import com.br.dbc.app.model.Ingresso;
+import com.br.dbc.app.repository.IngressoDTORepository;
+import com.br.dbc.app.repository.IngressoRepository;
 import com.br.dbc.app.service.CinemaService;
 import com.br.dbc.app.service.ClienteService;
 import com.br.dbc.app.service.FilmeService;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import static com.br.dbc.app.view.cliente.ClienteCadastroView.menuClienteCadastro;
@@ -23,7 +27,7 @@ public class ClienteView {
         throw new IllegalStateException("Classe útil");
     }
 
-    public static void menuCliente() {
+    public static void menuCliente() throws SQLException {
         final int CADASTRAR_CLIENTE = 1;
         final int LOGAR = 2;
         final int SAIR = 0;
@@ -68,20 +72,75 @@ public class ClienteView {
                         int opcao3 = Integer.parseInt(scanner.nextLine());
                         switch (opcao3) {
                             case ESCOLHER_CINEMA:
-                                int idCinemaEscolhido;
-                                int idFilmeEscolhido;
+                                Ingresso ingresso = new Ingresso();
+                                int idCinema = 0 ;
+                                int idFilme = 0 ;
 
                                 System.out.println(formatarTitulo("CINEMAS DISPONIVEIS"));
-                                // LISTAR CINEMAS DISPONIVEIS
-                                cinemaService.listarCinema();
-                                System.out.print("Digite o ID do cinema escolhido: ");
-                                idCinemaEscolhido = Integer.parseInt(scanner.nextLine());
 
-                                filmeService.listarFilmes();
+                                CinemaService cinemaService = new CinemaService();
+                                cinemaService.listarCinema();
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("Digite o ID do cinema escolhido: ");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("");
+
+                                idCinema = scanner.nextInt();
+                                scanner.nextLine();
+
+                                ingresso.setIdCinema(idCinema);
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("        *       "));
+                                System.out.println("                    * FILMES EM CARTAZ *                    ");
+                                System.out.println(formatarTitulo("        *       "));
+                                System.out.println("");
+
+                                FilmeService filme = new FilmeService();
+                                filme.listarFilmes();
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("Agora, escolha a Id do filme que deseja assistir:");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("");
+
+                                idFilme= scanner.nextInt();
+                                scanner.nextLine();
+                                ingresso.setIdFilme(idFilme);
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("         *          "));
+                                System.out.println("                    * BALCÃO  DE INGRESSOS *                    ");
+                                System.out.println(formatarTitulo("         *          "));
+                                System.out.println("");
+
+                                IngressoDTORepository ingressoAcomprar = new IngressoDTORepository();
+                                ingressoAcomprar.listIngressos(idFilme, idCinema);
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("Agora selecione a opção de compra!");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("");
+
+                                IngressoRepository ingressoRepository = new IngressoRepository();
+                                ingressoRepository.adicionar(ingresso);
+
+                                System.out.println("");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("Compra efetuada com sucesso!");
+                                System.out.println(formatarTitulo("*"));
+                                System.out.println("");
+
 
                                 break;
                             case LISTAR_INGRESSOS:
                                 System.out.println(formatarTitulo("LISTA DE INGRESSOS"));
+                                IngressoRepository listarIngressoComprado = new IngressoRepository();
+                                listarIngressoComprado.listarIngressoComprado();
                                 break;
                             case SAIR:
                                 clienteLogado = null;
