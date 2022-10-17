@@ -191,7 +191,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
                 PreparedStatement stmt = conexao.prepareStatement(sql);
                 stmt.setInt(1, id);
 
-                ResultSet res = stmt.executeQuery(sql);
+                ResultSet res = stmt.executeQuery();
                 while(res.next()){
                     IngressoComprado ingresso = getIngressoResultSet(res);
                     ingressosComprados.add(ingresso);
@@ -217,10 +217,7 @@ public class IngressoRepository implements Repository<Integer, Ingresso> {
     public IngressoComprado getIngressoResultSet(ResultSet res) throws SQLException {
 
         IngressoComprado ingresso = new IngressoComprado();
-        Cliente cliente = new Cliente();
 
-        cliente.setIdCliente(res.getInt("ID_CLIENTE"));
-//        ingresso.setIdCliente(res.getInt("ID_CLIENTE"));
         ingresso.setIdIngressoComprado(res.getInt("ID_INGRESSO"));
         ingresso.setNomeFilme(res.getString("FILME"));
         ingresso.setDataHora(res.getTimestamp("DATA_HORA").toLocalDateTime());

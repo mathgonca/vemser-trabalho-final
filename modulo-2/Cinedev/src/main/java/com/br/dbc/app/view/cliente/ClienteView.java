@@ -84,7 +84,7 @@ public class ClienteView {
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
-                                System.out.println("Digite o ID do cinema escolhido: ");
+                                System.out.println("           Digite o ID do cinema escolhido: ");
                                 System.out.println(formatarTitulo("*"));
                                 System.out.println("");
 
@@ -104,7 +104,7 @@ public class ClienteView {
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
-                                System.out.println("Agora, escolha a Id do filme que deseja assistir:");
+                                System.out.println("     Agora, escolha a Id do filme que deseja assistir:");
                                 System.out.println(formatarTitulo("*"));
                                 System.out.println("");
 
@@ -123,7 +123,7 @@ public class ClienteView {
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
-                                System.out.println("Agora selecione a opção de compra!");
+                                System.out.println("            Agora selecione a opção de compra!");
                                 System.out.println(formatarTitulo("*"));
                                 System.out.println("");
 
@@ -132,7 +132,7 @@ public class ClienteView {
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
-                                System.out.println("Compra efetuada com sucesso!");
+                                System.out.println("               Compra efetuada com sucesso!");
                                 System.out.println(formatarTitulo("*"));
                                 System.out.println("");
 
