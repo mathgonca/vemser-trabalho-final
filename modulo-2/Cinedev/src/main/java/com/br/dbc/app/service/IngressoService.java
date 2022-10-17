@@ -5,8 +5,10 @@ import com.br.dbc.app.exceptions.IngressoNaoEncontradoException;
 import com.br.dbc.app.model.Filme;
 import com.br.dbc.app.model.Ingresso;
 import com.br.dbc.app.model.IngressoComprado;
+import com.br.dbc.app.model.IngressoDTO;
 import com.br.dbc.app.model.enums.Disponibilidade;
 import com.br.dbc.app.repository.FilmeRepository;
+import com.br.dbc.app.repository.IngressoDTORepository;
 import com.br.dbc.app.repository.IngressoRepository;
 
 import java.sql.SQLException;
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class IngressoService {
 
     private IngressoRepository ingressoRepository;
+    private IngressoDTORepository ingressoDTORepository;
 
     public IngressoService() {
         ingressoRepository = new IngressoRepository();
+        ingressoDTORepository = new IngressoDTORepository();
     }
 
     public void adicionarIngresso(Ingresso ingresso) {
@@ -49,6 +53,17 @@ public class IngressoService {
     public void editaringresso(Integer id, Ingresso ingresso){
         try{
             boolean realizouEditar = ingressoRepository.editar(id, ingresso);
+
+        } catch(BancoDeDadosException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void listarIngressoDTO(int idFilme, int idCinema){
+        try{
+            List<IngressoDTO> list = ingressoDTORepository.listIngressos(idFilme,idCinema);
+            list.forEach(System.out::println);
 
         } catch(BancoDeDadosException e){
             e.printStackTrace();

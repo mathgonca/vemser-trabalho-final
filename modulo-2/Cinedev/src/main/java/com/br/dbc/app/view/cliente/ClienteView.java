@@ -118,8 +118,8 @@ public class ClienteView {
                                 System.out.println(formatarTitulo("         *          "));
                                 System.out.println("");
 
-                                IngressoDTORepository ingressoAcomprar = new IngressoDTORepository();
-                                ingressoAcomprar.listIngressos(idFilme, idCinema);
+                                IngressoService ingressoAcomprar = new IngressoService();
+                                ingressoAcomprar.listarIngressoDTO(idFilme, idCinema);
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
@@ -127,8 +127,10 @@ public class ClienteView {
                                 System.out.println(formatarTitulo("*"));
                                 System.out.println("");
 
-                                IngressoRepository ingressoRepository = new IngressoRepository();
-                                ingressoRepository.adicionar(ingresso);
+                                int idIngresso = scanner.nextInt();
+                                scanner.nextLine();
+                                ingresso.setIdIngresso(idIngresso);
+                                ingressoAcomprar.editaringresso(idIngresso, ingresso);
 
                                 System.out.println("");
                                 System.out.println(formatarTitulo("*"));
