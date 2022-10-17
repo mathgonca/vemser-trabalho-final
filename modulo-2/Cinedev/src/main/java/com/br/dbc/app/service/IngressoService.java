@@ -1,14 +1,17 @@
 package com.br.dbc.app.service;
 
 import com.br.dbc.app.exceptions.BancoDeDadosException;
+import com.br.dbc.app.exceptions.IngressoNaoEncontradoException;
 import com.br.dbc.app.model.Filme;
 import com.br.dbc.app.model.Ingresso;
 import com.br.dbc.app.model.IngressoComprado;
+import com.br.dbc.app.model.enums.Disponibilidade;
 import com.br.dbc.app.repository.FilmeRepository;
 import com.br.dbc.app.repository.IngressoRepository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class IngressoService {
 
@@ -74,4 +77,17 @@ public class IngressoService {
         }
     }
 
+     public void comprarIngresso(int idCliente, int idIngresso) throws BancoDeDadosException, IngressoNaoEncontradoException {
+        Optional<Ingresso> ingressoComprado = ingressoRepository.listarIngressoPeloId(idIngresso);
+
+        if (ingressoComprado.isPresent()) {
+            Ingresso ingresso = ingressoComprado.get();
+            ingresso.setIdCliente(idCliente);;
+            ingresso.setDisponibilidade(Disponibilidade.N);
+
+            editaringresso(idIngresso, ingresso);
+        } else {
+            throw new IngressoNaoEncontradoException("Ingresso não encontrado!");
+        }
+    }
 }
