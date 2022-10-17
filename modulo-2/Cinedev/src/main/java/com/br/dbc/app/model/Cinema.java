@@ -7,14 +7,20 @@ public class Cinema {
     private String estado;
     private String cidade;
 
+    public Cinema(int i, String nome, String estado, String cidade) {
+    }
+
+    public Cinema() {
+
+    }
 
 
     public int getIdCinema() {
         return idCinema;
     }
 
-    public void setIdCinema(int id) {
-        this.idCinema = id;
+    public void setIdCinema(Integer idCinema) {
+        this.idCinema = idCinema;
     }
 
     public String getNome() {
@@ -47,5 +53,9 @@ public class Cinema {
                 ", nome='" + nome + '\'' +
                 ", estado='" + estado + '\'' +
                 ", cidade='" + cidade + '\'';
+    }
+
+    public CharSequence getCpf() {
+        return null;
     }
 }
