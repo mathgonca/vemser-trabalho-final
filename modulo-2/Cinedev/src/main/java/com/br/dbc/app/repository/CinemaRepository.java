@@ -9,6 +9,7 @@ import com.br.dbc.app.model.Ingresso;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CinemaRepository implements Repository<Integer, Cinema> {
 
@@ -33,7 +34,6 @@ public class CinemaRepository implements Repository<Integer, Cinema> {
 
 
             cinema.setIdCinema(chaveID);
-
 
 
             String sql = "INSERT INTO CINEMA (ID_CINEMA, NOME, ESTADO, CIDADE)\n" +
@@ -151,7 +151,6 @@ public class CinemaRepository implements Repository<Integer, Cinema> {
                 Cinema cinema = new Cinema();
 
                 cinema.setIdCinema(ret.getInt("ID_CINEMA"));
-
                 cinema.setNome(ret.getString("NOME"));
                 cinema.setEstado(ret.getString("ESTADO"));
                 cinema.setCidade(ret.getString("CIDADE"));
@@ -171,5 +170,44 @@ public class CinemaRepository implements Repository<Integer, Cinema> {
         }
         return listaCinema;
     }
-}
+    public Optional<Cinema> listarCinemaId(int ID_CINEMA) throws BancoDeDadosException {
+        Optional<Cinema> cinemaOptional = Optional.empty();
+        Cinema cinema = new Cinema();
+        Connection con = null;
+        try {
+            con = ConexaoDadosCineDev.getConnection();
 
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM CINEMA");
+            sql.append(" WHERE ID_CINEMA = ?");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setInt(1, ID_CINEMA);
+
+            ResultSet res = stmt.executeQuery();
+
+            if (res.next()) {
+                cinema.setIdCinema(res.getInt("ID_CINEMA"));
+                cinema.setNome(res.getString("NOME"));
+                cinema.setEstado(res.getString("ESTADO"));
+                cinema.setCidade(res.getString("CIDADE"));
+                listar().add(cinema);
+
+                cinemaOptional = Optional.of(cinema);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return cinemaOptional;
+    }
+
+}
